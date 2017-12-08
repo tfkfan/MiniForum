@@ -10,20 +10,25 @@
         based on the recommendations of the Application Developer's Guide.
     </description>
 
-    <servlet>
-        <servlet-name>Dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-        	<param-name>contextConfigLocation</param-name>
-        	<param-value>/WEB-INF/spring-mvc-config.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+   <servlet>
+	    <servlet-name>spring</servlet-name>
+	    <servlet-class>
+	        org.springframework.web.servlet.DispatcherServlet
+	    </servlet-class>
+	    <init-param>
+	       <param-name>contextClass</param-name>
+	       <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	    </init-param>
+	    <init-param>
+	       <param-name>contextConfigLocation</param-name>
+	       <param-value>com.tfkfan.config.AppConfig</param-value>
+	    </init-param>
+	    <load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>spring</servlet-name>
+	    <url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 
 </web-app>

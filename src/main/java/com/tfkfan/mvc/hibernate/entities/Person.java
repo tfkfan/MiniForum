@@ -1,6 +1,5 @@
 package com.tfkfan.mvc.hibernate.entities;
 
-/*
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,9 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="person")
-*/
 public class Person { 
-	/*
 	@Id
 	@Column(name="id")
         private int id;  
@@ -28,5 +25,4 @@ public class Person {
 	public void setName(String name) {
 		this.name = name;
 	}
-	*/
 } 
