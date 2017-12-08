@@ -14,7 +14,7 @@
         <servlet-name>Dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
-        	<param-name>contextConfiglocation</param-name>
+        	<param-name>contextConfigLocation</param-name>
         	<param-value>/WEB-INF/spring-mvc-config.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
@@ -25,7 +25,5 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+
 </web-app>
