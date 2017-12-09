@@ -21,8 +21,7 @@ public class PersonDao implements IPersonDao {
 
 	public void savePerson() {
 		Person person = new Person();
-		person.setId(1);
-		person.setName("Ram");
+		person.setName("Ram2");
 		hibernateTemplate.save(person);
 	}
 }

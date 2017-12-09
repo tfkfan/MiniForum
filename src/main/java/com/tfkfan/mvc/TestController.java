@@ -16,7 +16,6 @@ public class TestController {
 	
 	@RequestMapping(value= "/test", method = RequestMethod.GET)
 	public String home(){
-		System.out.println("home");
 		dao.savePerson();
 		return "home";
 	}
