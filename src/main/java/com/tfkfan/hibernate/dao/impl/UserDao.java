@@ -9,11 +9,12 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 import com.tfkfan.hibernate.dao.IDao;
+import com.tfkfan.hibernate.dao.IUserDao;
 import com.tfkfan.hibernate.entities.User;
 @Component
 @Scope("singleton")
 @Transactional
-public class UserDao implements IDao<User> {
+public class UserDao implements IUserDao<User> {
 
 	@Autowired
 	HibernateTemplate hibernateTemplate;
@@ -34,6 +35,12 @@ public class UserDao implements IDao<User> {
 
 	@Override
 	public List<User> getList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User findByUserName(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -44,7 +44,7 @@ dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
     compile 'javax.servlet:jstl:1.2'
-    compile 'org.springframework:spring-webmvc:4.2.6.RELEASE'
+    compile 'org.springframework:spring-webmvc:4.3.5.RELEASE'
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
@@ -57,4 +57,7 @@ dependencies {
    compile 'org.javassist:javassist:3.15.0-GA'
    compile 'mysql:mysql-connector-java:5.1.31'
    compile 'commons-dbcp:commons-dbcp:1.4'
+  // https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+	compile 'org.springframework.security:spring-security-core:5.0.0.RELEASE'
+
 }
