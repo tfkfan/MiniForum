@@ -18,20 +18,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import com.tfkfan.mvc.hibernate.dao.IPersonDao;
-import com.tfkfan.mvc.hibernate.dao.impl.PersonDao;
-import com.tfkfan.mvc.hibernate.entities.Person;
+import com.tfkfan.hibernate.dao.IDao;
+import com.tfkfan.hibernate.dao.impl.UserDao;
+import com.tfkfan.hibernate.entities.User;
 
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan({ "com.tfkfan.mvc" })
+@ComponentScan({ "com.tfkfan" })
 public class AppConfig extends WebMvcConfigurerAdapter {
-	
-	@Bean
-	public IPersonDao personDao() {
-		return new PersonDao();
-	}
 
 	@Bean
 	public HibernateTemplate hibernateTemplate() {
@@ -40,7 +35,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(Person.class).buildSessionFactory();
+		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class).buildSessionFactory();
 	}
 
 	@Bean
