@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	@Qualifier("userDetailsService")
 	UserDetailsService userDetailsService;
 
 	@Autowired
@@ -36,6 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and().logout().logoutSuccessUrl("/login?logout")
 		.and().csrf()
 		.and().exceptionHandling().accessDeniedPage("/403");
+	}
+	
+	@Bean UserDetailsService getUserDetailsService(){
+		return  super.userDetailsService();
 	}
 
 	@Bean
