@@ -3,6 +3,8 @@ package com.tfkfan.hibernate.dao.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.stereotype.Component;
+
 import com.tfkfan.hibernate.dao.IDao;
 
 public abstract class AbstractDao<T> implements IDao<T> {

@@ -24,7 +24,7 @@ subprojects {
 
     gretty {
         scanInterval = 1 
-        host = '0.0.0.0' 
+        host = '127.0.0.1' 
         servletContainer = 'jetty7'
         managedClassReload = true
         integrationTestTask = 'integrationTest'
@@ -44,7 +44,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
  	compile 'javax.servlet:javax.servlet-api:4.0.0'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.1.4.RELEASE'
-    compile 'org.hibernate:hibernate-core:4.3.6.Final'
+    compile 'org.hibernate:hibernate-core:5.2.12.Final'
     compile 'org.javassist:javassist:3.15.0-GA'
     compile 'mysql:mysql-connector-java:5.1.31'
     compile 'commons-dbcp:commons-dbcp:1.4'

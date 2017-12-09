@@ -51,7 +51,7 @@
 		</c:if>
 
 		<form name='loginForm'
-			action="<c:url value='/login' />" method='GET'>
+			action="../MiniForum/login" method='POST'>
 
 			<table>
 				<tr>
@@ -67,12 +67,7 @@
 						value="submit" /></td>
 				</tr>
 			</table>
-
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
-
 		</form>
 	</div>
-
 </body>
 </html>

@@ -19,8 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import com.tfkfan.hibernate.dao.IDao;
-import com.tfkfan.hibernate.dao.impl.UserDao;
+import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 
 @Configuration
@@ -37,7 +36,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class).buildSessionFactory();
+		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class, Role.class).buildSessionFactory();
 	}
 
 	@Bean

@@ -1,6 +1,8 @@
 package com.tfkfan.hibernate.dao.impl;
 
 import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import com.tfkfan.hibernate.entities.User;
@@ -8,6 +10,7 @@ import com.tfkfan.hibernate.entities.User;
 @Component
 @Scope("singleton")
 @Transactional
+@Qualifier("userDao") 
 public class UserDao extends AbstractDao<User> {
 	private static final long serialVersionUID = 1L;
 

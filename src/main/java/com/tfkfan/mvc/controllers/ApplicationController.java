@@ -1,18 +1,12 @@
 package com.tfkfan.mvc.controllers;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.tfkfan.hibernate.dao.IDao;
 import com.tfkfan.hibernate.entities.User;
 
@@ -20,10 +14,12 @@ import com.tfkfan.hibernate.entities.User;
 public class ApplicationController {
 
 	@Autowired
+	@Qualifier("userDao")
 	IDao<User> userDao;
 	
 	@RequestMapping(value= "/", method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
+		//((UserDao)userDao).findByUserName(username);
 		ModelAndView model = new ModelAndView();
 		model.addObject("title", "Spring Security + Hibernate Example");
 		model.addObject("message", "This is default page!");
@@ -38,7 +34,7 @@ public class ApplicationController {
 
 		ModelAndView model = new ModelAndView();
 		if (error != null) 
-			model.addObject("error", error);
+			model.addObject("error", "Invalid username or password");
 
 		if (logout != null) 
 			model.addObject("msg", "You've been logged out successfully.");
