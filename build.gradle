@@ -38,10 +38,20 @@ subprojects {
 apply plugin: 'org.akhikhl.gretty'
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web:1.2.2.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-security:1.2.2.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.1.4.RELEASE'
-    compile 'org.hibernate:hibernate-core:5.2.12.Final'
+    compile 'org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-security:1.5.9.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.9.RELEASE'
+    compile 'org.hibernate:hibernate-core:5.1.0.Final'
+	compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
+	compile 'org.springframework:spring-orm:5.0.0.RELEASE'
+	compile 'org.springframework:spring-webmvc:5.0.0.RELEASE'
+	compile 'org.springframework:spring-tx:5.0.0.RELEASE'
+
+	compile 'org.springframework:spring-core:5.0.0.RELEASE'
+	compile 'org.springframework:spring-context:5.0.0.RELEASE'
+compile 'com.fasterxml.jackson.core:jackson-databind:2.9.3'
+	
+    
     compile 'org.javassist:javassist:3.15.0-GA'
     compile 'mysql:mysql-connector-java:5.1.31'
     compile 'commons-dbcp:commons-dbcp:1.4'
