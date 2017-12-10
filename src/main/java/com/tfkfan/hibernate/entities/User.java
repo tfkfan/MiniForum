@@ -20,10 +20,6 @@ package com.tfkfan.hibernate.entities;
      @Column(name = "password")
      protected String password;
  
-     @ManyToOne(cascade = CascadeType.ALL)
-     @JoinColumn(name="id_role")
-     protected Role role;
- 
      public User() {
  
      }
@@ -57,11 +53,5 @@ package com.tfkfan.hibernate.entities;
          this.name = name;
      }
      
-     public Role getRole() {
-         return role;
-     }
- 
-     public void setRole(Role role) {
-         this.role = role;
-     }
+   
  }

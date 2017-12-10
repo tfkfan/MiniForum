@@ -1,5 +1,6 @@
 package com.tfkfan.mvc.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -8,12 +9,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tfkfan.hibernate.dao.impl.UserDao;
+import com.tfkfan.hibernate.entities.User;
+
 @Controller
 public class ApplicationController {
 
+	@Autowired
+	UserDao userDao;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Authentication authentication) {
 		ModelAndView mv = new ModelAndView("home");
+		User user = new User();
+		user.setName(authentication.getName());
+		user.setPassword("saasdg");
+		userDao.save(user);
 		String role = "";
 		for (GrantedAuthority authority : authentication.getAuthorities())
 			role += authority.getAuthority();
