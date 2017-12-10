@@ -10,13 +10,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@ComponentScan("com.concretepage")
+@ComponentScan("com.tfkfan")
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/**").hasAnyRole("ADMIN", "USER").and().csrf().and().formLogin()
-				.loginPage("/login").permitAll();
+		http.authorizeRequests().antMatchers("/**").hasAnyRole("ADMIN", "USER").antMatchers("/admin/**")
+				.hasAnyRole("ADMIN").and().csrf().and().formLogin().loginPage("/login").permitAll().and()
+				.logout().logoutSuccessUrl("/login?logout").permitAll();
+
 	}
 
 	@Autowired
