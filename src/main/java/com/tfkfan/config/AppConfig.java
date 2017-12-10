@@ -1,6 +1,7 @@
 package com.tfkfan.config;
 
 import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +11,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,12 +22,12 @@ import org.springframework.web.servlet.view.JstlView;
 import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 
+
 @Configuration
+@ComponentScan("com.tfkfan")
 @EnableWebMvc
-@EnableTransactionManagement
-@ComponentScan({ "com.tfkfan" })
 @Import({ SecurityConfig.class })
-public class AppConfig extends WebMvcConfigurerAdapter {
+ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public HibernateTemplate hibernateTemplate() {
@@ -36,7 +36,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class, Role.class).buildSessionFactory();
+		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class, Role.class)
+				.buildSessionFactory();
 	}
 
 	@Bean
@@ -54,7 +55,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	public HibernateTransactionManager hibTransMan() {
 		return new HibernateTransactionManager(sessionFactory());
 	}
-	
 
 	@Bean
 	public ViewResolver viewResolver() {
@@ -71,8 +71,4 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable();
-	}
 }
