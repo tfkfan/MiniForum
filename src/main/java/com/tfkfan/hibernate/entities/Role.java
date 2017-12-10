@@ -30,7 +30,7 @@ public class Role {
 		this.role = role;
 	}
 
-	@ManyToMany(mappedBy = "roles")
+	@OneToMany(mappedBy = "role")
 	public Set<User> getUsers() {
 		return users;
 	}

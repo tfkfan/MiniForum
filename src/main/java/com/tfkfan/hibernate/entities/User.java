@@ -20,9 +20,9 @@ public class User implements Serializable {
 	@Column(name = "password")
 	protected String password;
 
-	@ManyToMany
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
-	protected Set<Role> roles;
+	@ManyToOne
+	@JoinColumn(name="id_role")
+	protected Role role;
 
 	public User() {
 
@@ -57,11 +57,11 @@ public class User implements Serializable {
 		this.name = name;
 	}
 	
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
