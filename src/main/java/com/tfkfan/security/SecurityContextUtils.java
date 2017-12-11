@@ -1,4 +1,4 @@
-package com.basakpie.security;
+package com.tfkfan.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -6,7 +6,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.basakpie.security.type.UserRole;
+import com.tfkfan.hibernate.entities.User;
+import com.tfkfan.security.enums.UserRole;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,9 +15,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by daesungkim on 2017. 5. 11..
- */
 @SuppressWarnings("unchecked")
 public final class SecurityContextUtils implements Serializable {
 

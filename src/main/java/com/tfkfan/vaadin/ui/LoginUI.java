@@ -1,4 +1,4 @@
-package com.basakpie.ui;
+package com.tfkfan.vaadin.ui;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.event.ShortcutAction;
@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.vaadin.spring.security.shared.VaadinSharedSecurity;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
 @SpringUI(path = "/login")
 @Theme("Demo")
 public class LoginUI extends UI {

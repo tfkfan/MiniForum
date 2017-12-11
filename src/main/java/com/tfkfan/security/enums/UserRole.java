@@ -1,4 +1,4 @@
-package com.basakpie.security.type;
+package com.tfkfan.security.enums;
 
 public enum UserRole {
 	 ROLE_ADMIN("ROLE_ADMIN"),

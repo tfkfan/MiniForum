@@ -1,4 +1,4 @@
-package com.basakpie.view;
+package com.tfkfan.vaadin.ui.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -11,22 +11,20 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import javax.annotation.PostConstruct;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
 @SpringComponent
 @UIScope
 @SpringView
-public class ErrorView extends VerticalLayout implements View {
+public class AccessDeniedView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
     @PostConstruct
-    void init() {
-        Label label = new Label("Hello, this is the 'error view' loaded if no view is matched based on URL.");
+    public void init() {
+        Label label = new Label("this is AccessDeniedView.");
         label.addStyleName(ValoTheme.LABEL_FAILURE);
         addComponent(label);
     }
+
 }

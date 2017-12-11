@@ -1,7 +1,7 @@
-package com.basakpie.view;
+package com.tfkfan.vaadin.ui.view;
 
-import com.basakpie.security.User;
-import com.basakpie.security.UserDao;
+import com.tfkfan.hibernate.dao.UserDao;
+import com.tfkfan.hibernate.entities.User;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
@@ -14,9 +14,6 @@ import org.springframework.security.access.annotation.Secured;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
 @Secured({"ROLE_ADMIN"})
 @SpringView(name = AdminView.VIEW_NAME)
 public class AdminView extends VerticalLayout implements View {
@@ -30,7 +27,7 @@ public class AdminView extends VerticalLayout implements View {
     public void init() {
         addComponent(new Label("Hello, this is admin view."));
 
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.listAll();
 
         Grid<User> grid = new Grid<>();
         grid.setSizeFull();

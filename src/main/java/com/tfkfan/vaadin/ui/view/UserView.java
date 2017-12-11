@@ -1,4 +1,4 @@
-package com.basakpie.view;
+package com.tfkfan.vaadin.ui.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -8,9 +8,6 @@ import com.vaadin.ui.VerticalLayout;
 
 import javax.annotation.PostConstruct;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
 @SpringView(name = UserView.VIEW_NAME)
 public class UserView extends VerticalLayout implements View {
 

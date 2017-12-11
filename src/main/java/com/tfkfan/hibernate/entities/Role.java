@@ -1,4 +1,4 @@
-package com.basakpie.security;
+package com.tfkfan.hibernate.entities;
 
 import java.util.HashMap;
 import java.util.HashSet;

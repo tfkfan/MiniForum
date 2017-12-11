@@ -1,8 +1,8 @@
-package com.basakpie.config;
+package com.tfkfan.application.config;
 
 
-import com.basakpie.security.Role;
-import com.basakpie.security.User;
+import com.tfkfan.hibernate.entities.Role;
+import com.tfkfan.hibernate.entities.User;
 import com.vaadin.spring.annotation.EnableVaadin;
 
 import javax.sql.DataSource;
@@ -39,9 +39,6 @@ import org.vaadin.spring.security.shared.VaadinSessionClosingLogoutHandler;
 import org.vaadin.spring.security.web.VaadinRedirectStrategy;
 import org.vaadin.spring.security.shared.VaadinUrlAuthenticationSuccessHandler;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
 @Configuration
 @EnableVaadin
 @EnableWebSecurity

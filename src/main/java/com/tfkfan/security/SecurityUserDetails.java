@@ -1,18 +1,16 @@
-package com.basakpie.security;
+package com.tfkfan.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
+import com.tfkfan.hibernate.entities.Role;
+import com.tfkfan.hibernate.entities.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
 public class SecurityUserDetails extends User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;

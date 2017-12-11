@@ -1,10 +1,10 @@
-package com.basakpie.ui;
+package com.tfkfan.vaadin.ui;
 
-import com.basakpie.security.SecurityContextUtils;
-import com.basakpie.view.AccessDeniedView;
-import com.basakpie.view.AdminView;
-import com.basakpie.view.ErrorView;
-import com.basakpie.view.UserView;
+import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.vaadin.ui.view.AccessDeniedView;
+import com.tfkfan.vaadin.ui.view.AdminView;
+import com.tfkfan.vaadin.ui.view.ErrorView;
+import com.tfkfan.vaadin.ui.view.UserView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
@@ -22,9 +22,7 @@ import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 
-/**
- * Created by basakpie on 2017. 5. 11..
- */
+
 @Theme("Demo")
 @SpringUI(path = "/")
 @SpringViewDisplay
