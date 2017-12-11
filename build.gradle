@@ -1,57 +1,96 @@
-apply plugin: 'java'
+buildscript {
+    repositories {
+        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "fi.jasoft.plugin:gradle-vaadin-plugin:${vaadinGradlePluginVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootPluginVersion}"
+    }
+}
 
-sourceCompatibility = 1.8;
-targetCompatibility = 1.8;
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'fi.jasoft.plugin.vaadin'
+apply plugin: 'org.springframework.boot'
 
 repositories {
-    mavenCentral();
-}
-
-buildscript {
-  repositories {
+    mavenLocal()
     jcenter()
-    // enable this to use snapshot versions of Gretty:
-    // maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
-  }
-
-  dependencies {
-    classpath 'org.akhikhl.gretty:gretty:+'
-  }
+    maven { url = "http://maven.vaadin.com/vaadin-addons"}
 }
 
-subprojects {
-    apply plugin: 'org.akhikhl.gretty'
+[compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
 
-    gretty {
-        scanInterval = 1 
-        host = '127.0.0.1' 
-        servletContainer = 'jetty7'
-        managedClassReload = true
-        integrationTestTask = 'integrationTest'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    from 'src/main/webapp'
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources=true
     }
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-    version = '1.0'
 }
 
-apply plugin: 'org.akhikhl.gretty'
+idea {
+    module {
+        jdkName = '1.8'
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+eclipseJdt.onlyIf { false }
+cleanEclipseJdt.onlyIf { false }
+
+idea {
+    sourceSets.main.resources.srcDir  'src/main/webapp'
+}
+
+springBoot {
+    mainClass = 'com.basakpie.Application'
+}
+
+bootRun.dependsOn 'vaadinCompile', 'vaadinThemeCompile'
+
+vaadin {
+    version "${vaadinBomVersion}"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.vaadin:vaadin-bom:${vaadinBomVersion}"
+    }
+    dependencies {
+        dependency("com.vaadin:vaadin-spring-boot-starter:${vaadinSpringVersion}")
+        dependency("org.vaadin.spring.extensions:vaadin-spring-ext-boot:${vaadin4SpringVersion}")
+        dependency("org.vaadin.spring.extensions:vaadin-spring-ext-security:${vaadin4SpringVersion}")
+        dependency("org.hibernate:hibernate-validator:4.3.1.Final")
+        dependency("javax.validation:validation-api:1.0.0.GA")
+    }
+}
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-security:1.5.9.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:1.5.9.RELEASE'
+    compile 'com.vaadin:vaadin-spring-boot-starter'
+    compile 'org.vaadin.spring.extensions:vaadin-spring-ext-boot'
+    compile 'org.vaadin.spring.extensions:vaadin-spring-ext-security'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.hibernate:hibernate-core:5.1.0.Final'
 	compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
-
 	
-    compile 'org.javassist:javassist:3.15.0-GA'
-    compile 'mysql:mysql-connector-java:5.1.31'
+	 compile 'mysql:mysql-connector-java:5.1.31'
     compile 'commons-dbcp:commons-dbcp:1.4'
     
-    compile 'javax.servlet.jsp:jsp-api:2.2'
-    compile 'javax.servlet:jstl:1.2'
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    testCompile 'junit:junit:4.12'
-    compile 'javax.servlet:javax.servlet-api:4.0.0'
+    runtime 'org.hsqldb:hsqldb'
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
 }
