@@ -1,4 +1,4 @@
-package com.tfkfan.application;
+package com.tfkfan;
 
 import com.tfkfan.hibernate.dao.RoleDao;
 import com.tfkfan.hibernate.dao.UserDao;
@@ -19,8 +19,6 @@ public class Application implements CommandLineRunner {
     @Autowired
     UserDao userRepository;
 
-    @Autowired
-    RoleDao roleDao;
     
     @Autowired
     PasswordEncoder passwordEncoder;

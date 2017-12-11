@@ -12,9 +12,12 @@ public class RoleDao extends AbstractDao<Role>{
 
 	public RoleDao() {
 		super(Role.class);
+		
 	}
 
 	public Role getRoleByName(String role) {
 		return (Role) getTemplate().find("FROM Role WHERE role=?" , role).get(0);
 	}
+	
+	
 }

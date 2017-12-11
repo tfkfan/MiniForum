@@ -17,8 +17,9 @@ import java.util.List;
 @Secured({"ROLE_ADMIN"})
 @SpringView(name = AdminView.VIEW_NAME)
 public class AdminView extends VerticalLayout implements View {
+	private static final long serialVersionUID = 1L;
 
-    public static final String VIEW_NAME = "admin";
+	public static final String VIEW_NAME = "admin";
 
     @Autowired
     UserDao userRepository;

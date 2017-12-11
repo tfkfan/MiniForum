@@ -53,7 +53,7 @@ idea {
 }
 
 springBoot {
-    mainClass = 'com.basakpie.Application'
+    mainClass = 'com.tfkfan.Application'
 }
 
 bootRun.dependsOn 'vaadinCompile', 'vaadinThemeCompile'
@@ -82,11 +82,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.hibernate:hibernate-core:5.1.0.Final'
 	compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
-	
-	 compile 'mysql:mysql-connector-java:5.1.31'
+	compile 'mysql:mysql-connector-java:5.1.31'
     compile 'commons-dbcp:commons-dbcp:1.4'
-    
-    runtime 'org.hsqldb:hsqldb'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

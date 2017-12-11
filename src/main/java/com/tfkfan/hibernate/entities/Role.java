@@ -1,6 +1,5 @@
 package com.tfkfan.hibernate.entities;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;

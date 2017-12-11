@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unchecked")
 public final class SecurityContextUtils implements Serializable {
 
-    private static final Long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     public SecurityContextUtils() {
     }
@@ -60,7 +60,7 @@ public final class SecurityContextUtils implements Serializable {
         return roleTypes;
     }
 
-    @SuppressWarnings("unchecked")
+
     private static Authentication authentication() {
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         if(securityContext==null) {

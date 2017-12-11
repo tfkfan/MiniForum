@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.tfkfan.hibernate.dao.UserDao;
 import com.tfkfan.hibernate.entities.User;
 
-@Service
+@Service("userDetailsService")
 public class SecurityUserDetailsService implements UserDetailsService {
 
     @Autowired

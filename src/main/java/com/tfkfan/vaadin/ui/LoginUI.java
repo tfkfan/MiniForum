@@ -14,8 +14,9 @@ import org.vaadin.spring.security.shared.VaadinSharedSecurity;
 @SpringUI(path = "/login")
 @Theme("Demo")
 public class LoginUI extends UI {
+	private static final long serialVersionUID = 1L;
 
-    @Autowired
+	@Autowired
     VaadinSharedSecurity vaadinSecurity;
 
     private TextField userName;

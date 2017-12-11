@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 @SpringUI(path = "/")
 @SpringViewDisplay
 public class MainUI extends UI implements ViewDisplay {
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	ApplicationContext applicationContext;

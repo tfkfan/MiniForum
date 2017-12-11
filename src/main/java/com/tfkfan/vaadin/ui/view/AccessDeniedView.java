@@ -15,8 +15,9 @@ import javax.annotation.PostConstruct;
 @UIScope
 @SpringView
 public class AccessDeniedView extends VerticalLayout implements View {
+	private static final long serialVersionUID = 1L;
 
-    @Override
+	@Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
