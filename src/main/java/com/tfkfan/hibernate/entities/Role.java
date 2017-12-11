@@ -1,5 +1,7 @@
 package com.tfkfan.hibernate.entities;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -8,11 +10,14 @@ import javax.persistence.*;
 public class Role {
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "role")
 	private String role;
+	
+	@OneToMany (mappedBy = "role")
+	private Set<User> users = new HashSet<User>();
 
 	public Long getId() {
 		return id;
@@ -28,6 +33,14 @@ public class Role {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 
 }

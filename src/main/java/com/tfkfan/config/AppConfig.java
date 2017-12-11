@@ -23,13 +23,12 @@ import org.springframework.web.servlet.view.JstlView;
 import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 
-
 @Configuration
 @ComponentScan("com.tfkfan")
 @EnableWebMvc
 @EnableTransactionManagement
 @Import({ SecurityConfig.class })
- public class AppConfig extends WebMvcConfigurerAdapter {
+public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public HibernateTemplate hibernateTemplate() {
@@ -46,10 +45,9 @@ import com.tfkfan.hibernate.entities.User;
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/MiniForum");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/miniforum");
 		dataSource.setUsername("root");
 		dataSource.setPassword("1324");
-		
 
 		return dataSource;
 	}

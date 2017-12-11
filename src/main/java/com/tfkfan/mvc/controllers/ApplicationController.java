@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tfkfan.enums.UserRole;
+import com.tfkfan.hibernate.dao.impl.RoleDao;
 import com.tfkfan.hibernate.dao.impl.UserDao;
+import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 
 @Controller
@@ -18,18 +21,27 @@ public class ApplicationController {
 	@Autowired
 	UserDao userDao;
 	
+	@Autowired
+	RoleDao roleDao;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Authentication authentication) {
 		ModelAndView mv = new ModelAndView("home");
+		
+		Role role = roleDao.getRoleByName(UserRole.USER.getRole());
+		
 		User user = new User();
 		user.setUsername(authentication.getName());
 		user.setPassword("saasdg");
+		user.setRole(role);
 		userDao.save(user);
-		String role = "";
+		
+		
+		String roleStr = "";
 		for (GrantedAuthority authority : authentication.getAuthorities())
-			role += authority.getAuthority();
+			roleStr += authority.getAuthority();
 
-		mv.addObject("role", role);
+		mv.addObject("role", roleStr);
 		mv.addObject("username", authentication.getName());
 		return mv;
 	}

@@ -1,33 +1,31 @@
 package com.tfkfan.hibernate.dao.impl;
 
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 
-@Component("userDao")
+@Component("roleDao")
 @Scope("singleton")
 @Transactional
-public class UserDao  {
-	@Autowired
-	private SessionFactory sessionFactory;
-
+public class RoleDao {
 	@Autowired
 	HibernateTemplate t;
   
 	
-	public UserDao() {
+	public RoleDao() {
 	
 	}
 
-	public void save(User object) {
+	public void save(Role object) {
 		t.save(object);
+	}
+	
+	public Role getRoleByName(String role) {
+		return (Role) t.find("FROM Role WHERE role=?" , role).get(0);
 	}
 }
