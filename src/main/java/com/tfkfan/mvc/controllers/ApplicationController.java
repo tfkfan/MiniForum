@@ -22,7 +22,7 @@ public class ApplicationController {
 	public ModelAndView home(Authentication authentication) {
 		ModelAndView mv = new ModelAndView("home");
 		User user = new User();
-		user.setName(authentication.getName());
+		user.setUsername(authentication.getName());
 		user.setPassword("saasdg");
 		userDao.save(user);
 		String role = "";

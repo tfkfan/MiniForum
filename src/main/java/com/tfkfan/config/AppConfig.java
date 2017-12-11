@@ -49,6 +49,7 @@ import com.tfkfan.hibernate.entities.User;
 		dataSource.setUrl("jdbc:mysql://localhost:3306/MiniForum");
 		dataSource.setUsername("root");
 		dataSource.setPassword("1324");
+		
 
 		return dataSource;
 	}

@@ -14,8 +14,8 @@ package com.tfkfan.hibernate.entities;
      @Column(name = "id")
      protected int id;
  
-     @Column(name = "name")
-     protected String name;
+     @Column(name = "username")
+     protected String username;
  
      @Column(name = "password")
      protected String password;
@@ -24,8 +24,8 @@ package com.tfkfan.hibernate.entities;
  
      }
  
-     public User(String name, String password) {
-         setName(name);
+     public User(String username, String password) {
+         setUsername(username);
          setPassword(password);
      }
  
@@ -46,11 +46,11 @@ package com.tfkfan.hibernate.entities;
      }
  
      public String getName() {
-         return name;
+         return username;
      }
  
-     public void setName(String name) {
-         this.name = name;
+     public void setUsername(String name) {
+         this.username = name;
      }
      
    
