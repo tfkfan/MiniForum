@@ -29,6 +29,7 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+    	/*
         Arrays.stream(UserRole.values()).forEach(x -> {
             String name = x.getRole().split("_")[1].toLowerCase();
 
@@ -37,12 +38,13 @@ public class Application implements CommandLineRunner {
             user.setPassword(passwordEncoder.encode("1234"));
 
             Role role = new Role();
-            role.setId(1L);
+            role.setId(3L);
             //role.setRole(x);
             //role.setUser(user);
 
             user.setRole(role);
             userRepository.save(user);
         });
+        */
     }
 }
