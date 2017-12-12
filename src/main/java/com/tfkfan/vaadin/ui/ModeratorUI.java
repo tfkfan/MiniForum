@@ -1,37 +1,22 @@
 package com.tfkfan.vaadin.ui;
 
 import com.tfkfan.hibernate.dao.MessageDao;
-import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Message;
-import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
-import com.tfkfan.vaadin.ui.view.AccessDeniedView;
-import com.tfkfan.vaadin.ui.view.AdminUsersView;
-import com.tfkfan.vaadin.ui.view.ErrorView;
-import com.tfkfan.vaadin.ui.view.UserView;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewDisplay;
-import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.spring.annotation.SpringViewDisplay;
-import com.vaadin.spring.navigator.SpringNavigator;
-import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ClickableRenderer.RendererClickEvent;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
-
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @com.vaadin.annotations.Theme("Demo")
 @SpringUI(path = "/moderate")

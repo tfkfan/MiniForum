@@ -1,15 +1,11 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.UserDao;
-import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
 import com.tfkfan.vaadin.ui.view.AccessDeniedView;
 import com.tfkfan.vaadin.ui.view.AdminUsersView;
 import com.tfkfan.vaadin.ui.view.ErrorView;
-import com.tfkfan.vaadin.ui.view.UserView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -20,13 +16,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.access.annotation.Secured;
 import org.vaadin.spring.security.VaadinSecurity;
-
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Theme("Demo")
 @SpringUI(path = "/admin")
