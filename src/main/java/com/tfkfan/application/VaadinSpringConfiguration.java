@@ -1,6 +1,7 @@
 package com.tfkfan.application;
 
 import com.tfkfan.hibernate.entities.Role;
+import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityUserDetailsService;
 import com.vaadin.spring.annotation.EnableVaadin;
@@ -63,7 +64,7 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
-		http.authorizeRequests().antMatchers("/login/**").anonymous().antMatchers("/vaadinServlet/UIDL/**").permitAll()
+		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN").antMatchers("/login/**").anonymous().antMatchers("/vaadinServlet/UIDL/**").permitAll()
 				.antMatchers("/vaadinServlet/HEARTBEAT/**").permitAll().anyRequest().authenticated();
 
 		http.httpBasic().disable();
@@ -113,7 +114,7 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class, Role.class)
+		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class, Role.class, Theme.class)
 				.buildSessionFactory();
 	}
 

@@ -10,13 +10,13 @@ public class Role {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	protected Long id;
 
 	@Column(name = "role")
-	private String role;
+	protected String role;
 	
 	@OneToMany (mappedBy = "role")
-	private Set<User> users = new HashSet<User>();
+	protected Set<User> users = new HashSet<User>();
 
 	public Long getId() {
 		return id;

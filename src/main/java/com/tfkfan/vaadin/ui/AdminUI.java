@@ -29,7 +29,6 @@ import java.util.List;
 
 
 @Theme("Demo")
-@Secured({"ROLE_ADMIN"})
 @SpringUI(path = "/admin")
 @SpringViewDisplay
 public class AdminUI extends UI implements ViewDisplay {

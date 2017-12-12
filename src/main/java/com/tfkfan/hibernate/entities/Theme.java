@@ -1,7 +1,5 @@
 package com.tfkfan.hibernate.entities;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 
 @Entity
@@ -20,7 +18,7 @@ public class Theme {
 
 	@ManyToOne
 	@JoinColumn(name = "id_autor")
-	private User autor;
+	protected User autor;
 
 	public Theme() {
 

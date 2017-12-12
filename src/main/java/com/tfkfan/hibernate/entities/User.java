@@ -1,5 +1,8 @@
 package com.tfkfan.hibernate.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,6 +23,9 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name = "id_role")
 	protected Role role;
+	
+	@OneToMany (mappedBy = "autor")
+	protected Set<Theme> themes = new HashSet<Theme>();
 
 	public User() {
 
@@ -60,6 +66,14 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	
+	public Set<Theme> getThemes() {
+		return themes;
+	}
+
+	public void setThemes(Set<Theme> themes) {
+		this.themes = themes;
 	}
 
 }
