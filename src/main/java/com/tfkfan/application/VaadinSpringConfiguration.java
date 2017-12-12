@@ -65,9 +65,12 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
-		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN").antMatchers("/theme**").authenticated()
-				.antMatchers("/login/**").anonymous().antMatchers("/vaadinServlet/UIDL/**").permitAll()
-				.antMatchers("/vaadinServlet/HEARTBEAT/**").permitAll().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN");
+		http.authorizeRequests().antMatchers("/theme**").authenticated();
+		http.authorizeRequests().antMatchers("/login/**").anonymous();
+		http.authorizeRequests().antMatchers("/moderate**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')");
+		http.authorizeRequests().antMatchers("/vaadinServlet/UIDL/**").permitAll();
+		http.authorizeRequests().antMatchers("/vaadinServlet/HEARTBEAT/**").permitAll().anyRequest().authenticated();
 
 		http.httpBasic().disable();
 		http.formLogin().disable();

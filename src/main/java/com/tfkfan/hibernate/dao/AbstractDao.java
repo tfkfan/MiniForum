@@ -28,6 +28,10 @@ public abstract class AbstractDao<T> {
 	public List<T> listAll() {
 		return hTemplate.loadAll(clazz);
 	}
+	
+	public void update(T obj){
+		hTemplate.merge(obj);
+	}
 
 	protected HibernateTemplate getTemplate() {
 		return hTemplate;
@@ -36,4 +40,5 @@ public abstract class AbstractDao<T> {
 	protected void setTemplate(HibernateTemplate hTemplate) {
 		this.hTemplate = hTemplate;
 	}
+	
 }

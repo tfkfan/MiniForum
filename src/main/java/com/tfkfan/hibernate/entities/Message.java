@@ -94,4 +94,18 @@ public class Message {
 		this.theme = theme;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj == null || obj.getClass() != this.getClass())
+			return false;
+		if (!(obj instanceof Message))
+			return false;
+
+		Message msg = (Message) obj;
+		return id == msg.id;
+
+	}
+
 }

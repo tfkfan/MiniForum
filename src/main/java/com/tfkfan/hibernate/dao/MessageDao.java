@@ -14,13 +14,13 @@ import com.tfkfan.hibernate.entities.User;
 @Scope("singleton")
 @Transactional
 public class MessageDao extends AbstractDao<Message> {
-	
+
 	public MessageDao() {
 		super(Message.class);
 
 	}
-	
-	public List<Message> getAllNotPublishedMessages(){
-		return (List<Message>) getTemplate().find("FROM Message WHERE is_published=false");
+
+	public List<Message> getAllNotPublishedMessages() {
+		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='false'");
 	}
 }
