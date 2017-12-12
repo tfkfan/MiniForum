@@ -8,7 +8,6 @@ import com.tfkfan.security.enums.UserRole;
 import com.tfkfan.vaadin.ui.widgets.UserLabel;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
-import com.vaadin.server.Sizeable;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
@@ -56,13 +55,13 @@ public class MainUI extends UI {
 
 		String userRole = currentUser.getRole().getRole();
 		if (userRole.equals(UserRole.ROLE_MODERATOR.getRole()) || userRole.equals(UserRole.ROLE_ADMIN.getRole()))
-			topElems.addComponents(new Link("Moderator page", new ExternalResource("/moderate")));
+			topElems.addComponent(new Link("Moderator page", new ExternalResource("/moderate")));
 
 		if (userRole.equals(UserRole.ROLE_ADMIN.getRole())) 
 			topElems.addComponent(new Link("Admin page", new ExternalResource("/admin")));
 
 		root.setSizeFull();
-		root.addComponents(topElems);
+		root.addComponent(topElems);
 
 		List<Theme> themes = themeDao.listAll();
 

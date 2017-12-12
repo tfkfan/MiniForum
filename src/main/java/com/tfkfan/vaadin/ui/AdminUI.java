@@ -1,9 +1,11 @@
 package com.tfkfan.vaadin.ui;
 
+import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
 import com.tfkfan.vaadin.ui.view.AccessDeniedView;
 import com.tfkfan.vaadin.ui.view.AdminUsersView;
 import com.tfkfan.vaadin.ui.view.ErrorView;
+import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
@@ -40,6 +42,8 @@ public class AdminUI extends UI implements ViewDisplay {
 
 	Panel springViewDisplay;
 
+	User currentUser;
+
 	@PostConstruct
 	public void init() {
 		springNavigator.setErrorView(ErrorView.class);
@@ -49,27 +53,32 @@ public class AdminUI extends UI implements ViewDisplay {
 	}
 
 	@Override
-	protected void init(VaadinRequest request){
+	protected void init(VaadinRequest request) {
 		getPage().setTitle("Vaadin Security Demo");
+		currentUser = SecurityContextUtils.getUser();
+
+		final VerticalLayout root = new VerticalLayout();
+		final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+		topElems.customInit();
 
 		final CssLayout navigationBar = new CssLayout();
 		navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		navigationBar.addComponent(createNavigationButton("Users", AdminUsersView.VIEW_NAME));
-		navigationBar.addComponent(new Button("Logout", e -> vaadinSecurity.logout()));
 
-		final VerticalLayout root = new VerticalLayout();
-		root.setSizeFull();
-		root.addComponents(new Label(SecurityContextUtils.getUser().getUsername() + " : " + LocalDateTime.now()));
-		root.addComponent(navigationBar);
-		root.addComponent(springViewDisplay);
-		root.setExpandRatio(springViewDisplay, 1.0f);
+		final VerticalLayout gridLayout = new VerticalLayout();
+		gridLayout.setSizeFull();
+
+		gridLayout.addComponent(springViewDisplay);
+		gridLayout.setExpandRatio(springViewDisplay, 1.0f);
+
+		root.addComponents(topElems, navigationBar, gridLayout);
 
 		setContent(root);
 	}
 
 	@Override
 	public void showView(View view) {
-		springViewDisplay.setContent((Component)view);
+		springViewDisplay.setContent((Component) view);
 	}
 
 	private Button createNavigationButton(String caption, final String viewName) {
@@ -79,4 +88,3 @@ public class AdminUI extends UI implements ViewDisplay {
 	}
 
 }
-

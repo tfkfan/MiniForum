@@ -4,6 +4,7 @@ import com.tfkfan.hibernate.dao.MessageDao;
 import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
@@ -46,12 +47,11 @@ public class ModeratorUI extends UI {
 		getPage().setTitle("Forum moderator page");
 
 		try {
-			HorizontalSplitPanel root = new HorizontalSplitPanel();
+			final VerticalLayout root = new VerticalLayout();
+			final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+			topElems.customInit();
 
-			final VerticalLayout leftLayout = new VerticalLayout();
-			leftLayout.setSizeFull();
-			leftLayout.addComponents(
-					new Label(SecurityContextUtils.getUser().getUsername() + " : " + LocalDateTime.now()));
+			root.addComponent(topElems);
 
 			messages = messageDao.getAllNotPublishedMessages();
 			Grid<Message> grid = new Grid<Message>();
@@ -66,17 +66,9 @@ public class ModeratorUI extends UI {
 			grid.addColumn(message -> "Publish message",
 					new ButtonRenderer<Message>(clickEvent -> publishClick(clickEvent, grid))).setCaption("Publish");
 
-			leftLayout.addComponent(grid);
-			leftLayout.setExpandRatio(grid, 1f);
+			root.addComponent(grid);
+			root.setExpandRatio(grid, 1f);
 
-			root.setFirstComponent(leftLayout);
-
-			VerticalLayout rightLayout = new VerticalLayout();
-
-			// addBtn.addClickListener(event -> showModalWindow());
-			// rightLayout.addComponent(addBtn);
-
-			root.setSecondComponent(rightLayout);
 			setContent(root);
 		} catch (Exception e) {
 			e.printStackTrace();
