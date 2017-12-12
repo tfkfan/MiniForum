@@ -1,5 +1,6 @@
 package com.tfkfan.application;
 
+import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
@@ -64,7 +65,8 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
-		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN").antMatchers("/login/**").anonymous().antMatchers("/vaadinServlet/UIDL/**").permitAll()
+		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN").antMatchers("/theme**").authenticated()
+				.antMatchers("/login/**").anonymous().antMatchers("/vaadinServlet/UIDL/**").permitAll()
 				.antMatchers("/vaadinServlet/HEARTBEAT/**").permitAll().anyRequest().authenticated();
 
 		http.httpBasic().disable();
@@ -114,8 +116,8 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public SessionFactory sessionFactory() {
-		return new LocalSessionFactoryBuilder(getDataSource()).addAnnotatedClasses(User.class, Role.class, Theme.class)
-				.buildSessionFactory();
+		return new LocalSessionFactoryBuilder(getDataSource())
+				.addAnnotatedClasses(User.class, Role.class, Message.class, Theme.class).buildSessionFactory();
 	}
 
 	@Bean

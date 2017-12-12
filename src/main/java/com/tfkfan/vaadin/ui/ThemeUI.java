@@ -1,6 +1,8 @@
 package com.tfkfan.vaadin.ui;
 
+import com.tfkfan.hibernate.dao.MessageDao;
 import com.tfkfan.hibernate.dao.ThemeDao;
+import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
@@ -28,10 +30,11 @@ import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @com.vaadin.annotations.Theme("Demo")
-@SpringUI(path = "/")
-public class MainUI extends UI {
+@SpringUI(path = "/theme")
+public class ThemeUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,6 +46,12 @@ public class MainUI extends UI {
 
 	@Autowired
 	ThemeDao themeDao;
+	
+	@Autowired
+	MessageDao messageDao;
+	
+	Theme theme;
+	User currentUser = SecurityContextUtils.getUser();
 
 	@PostConstruct
 	public void init() {
@@ -51,37 +60,48 @@ public class MainUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		getPage().setTitle("Forum");
+		getPage().setTitle("Forum ");
 
-		HorizontalSplitPanel root = new HorizontalSplitPanel();
+		try {
+			Long id_theme = Long.parseLong(request.getParameter("id"));
+			theme = themeDao.get(id_theme);
+			if(theme == null)
+				return;
+			
+			getPage().setTitle(theme.getTitle() + " theme");
+			
+			Set<Message> messages = theme.getPublishedMessages();
 
-		final VerticalLayout leftLayout = new VerticalLayout();
-		leftLayout.setSizeFull();
-		leftLayout.addComponents(new Label(SecurityContextUtils.getUser().getUsername() + " : " + LocalDateTime.now()));
+			HorizontalSplitPanel root = new HorizontalSplitPanel();
 
-		List<Theme> themes = themeDao.listAll();
+			final VerticalLayout leftLayout = new VerticalLayout();
+			leftLayout.setSizeFull();
+			leftLayout.addComponents(
+					new Label(SecurityContextUtils.getUser().getUsername() + " : " + LocalDateTime.now()));
 
-		Grid<Theme> grid = new Grid<Theme>();
-		grid.setSizeFull();
-		grid.setItems(themes);
+			Grid<Message> grid = new Grid<Message>();
+			grid.setSizeFull();
+			grid.setItems(messages);
 
-		grid.addColumn(theme -> "<a href='/theme?id=" + theme.getId() + "' target='_top'>" + theme.getTitle() + "</a>",
-				new HtmlRenderer()).setCaption("Title");
-		grid.addColumn(theme -> theme.getAutor().getUsername(), new TextRenderer()).setCaption("Autor");
-		grid.addColumn(Theme::getDate).setCaption("Date");
+			grid.addColumn(message -> message.getText(), new TextRenderer()).setCaption("Text");
+			grid.addColumn(message -> message.getUser().getUsername(), new TextRenderer()).setCaption("Autor");
+			grid.addColumn(Message::getDate).setCaption("Date");
 
-		leftLayout.addComponent(grid);
-		leftLayout.setExpandRatio(grid, 1f);
+			leftLayout.addComponent(grid);
+			leftLayout.setExpandRatio(grid, 1f);
 
-		root.setFirstComponent(leftLayout);
+			root.setFirstComponent(leftLayout);
 
-		VerticalLayout rightLayout = new VerticalLayout();
-		Button addBtn = new Button("Add Theme");
-		addBtn.addClickListener(event -> showModalWindow());
-		rightLayout.addComponent(addBtn);
+			VerticalLayout rightLayout = new VerticalLayout();
+			Button addBtn = new Button("Add message");
+			addBtn.addClickListener(event -> showModalWindow());
+			rightLayout.addComponent(addBtn);
 
-		root.setSecondComponent(rightLayout);
-		setContent(root);
+			root.setSecondComponent(rightLayout);
+			setContent(root);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void showModalWindow() {
@@ -92,13 +112,13 @@ public class MainUI extends UI {
 
 		FormLayout form = new FormLayout();
 
-		TextField titleField = new TextField("Theme title");
-		form.addComponent(titleField);
+		TextField textField = new TextField("Message");
+		form.addComponent(textField);
 
 		HorizontalLayout btns = new HorizontalLayout();
 
-		Button formBtn = new Button("Create");
-		formBtn.addClickListener(event -> addThemeClick(subWindow, titleField.getValue()));
+		Button formBtn = new Button("Add");
+		formBtn.addClickListener(event -> addMessageClick(subWindow, textField.getValue()));
 
 		Button formCloseBtn = new Button("Close");
 		formCloseBtn.addClickListener(event -> subWindow.close());
@@ -111,13 +131,13 @@ public class MainUI extends UI {
 		addWindow(subWindow);
 	}
 
-	protected void addThemeClick(Window subWindow, String themeTitle) {
-		User currentUser = SecurityContextUtils.getUser();
-		Theme theme = new Theme(LocalDateTime.now().toString(), themeTitle, currentUser);
-
-		themeDao.save(theme);
+	protected void addMessageClick(Window subWindow, String text) {
+		String date = LocalDateTime.now().toString();
+		Message message = new Message(text, date, theme, currentUser);
+		messageDao.save(message);
 
 		subWindow.close();
 		Page.getCurrent().reload();
+		
 	}
 }

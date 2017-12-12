@@ -26,6 +26,9 @@ public class User {
 	
 	@OneToMany (mappedBy = "autor")
 	protected Set<Theme> themes = new HashSet<Theme>();
+	
+	@OneToMany (mappedBy = "user")
+	protected Set<Message> messages = new HashSet<Message>();
 
 	public User() {
 
@@ -74,6 +77,14 @@ public class User {
 
 	public void setThemes(Set<Theme> themes) {
 		this.themes = themes;
+	}
+	
+	public Set<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(Set<Message> messages) {
+		this.messages = messages;
 	}
 
 }
