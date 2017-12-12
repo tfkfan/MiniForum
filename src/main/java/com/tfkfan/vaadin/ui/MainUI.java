@@ -4,9 +4,7 @@ import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
-import com.tfkfan.security.enums.UserRole;
-import com.tfkfan.vaadin.ui.widgets.UserLabel;
-import com.vaadin.server.ExternalResource;
+import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -48,17 +46,8 @@ public class MainUI extends UI {
 		currentUser = SecurityContextUtils.getUser();
 
 		final VerticalLayout root = new VerticalLayout();
-		final HorizontalLayout topElems = new HorizontalLayout();
-		topElems.addComponents(new UserLabel(currentUser.getUsername()),
-				new Button("Logout", e -> vaadinSecurity.logout()),
-				new Button("Add Theme", event -> showModalWindow()));
-
-		String userRole = currentUser.getRole().getRole();
-		if (userRole.equals(UserRole.ROLE_MODERATOR.getRole()) || userRole.equals(UserRole.ROLE_ADMIN.getRole()))
-			topElems.addComponent(new Link("Moderator page", new ExternalResource("/moderate")));
-
-		if (userRole.equals(UserRole.ROLE_ADMIN.getRole())) 
-			topElems.addComponent(new Link("Admin page", new ExternalResource("/admin")));
+		final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+		topElems.customInit();
 
 		root.setSizeFull();
 		root.addComponent(topElems);

@@ -27,5 +27,4 @@ public class AccessDeniedView extends VerticalLayout implements View {
         label.addStyleName(ValoTheme.LABEL_FAILURE);
         addComponent(label);
     }
-
 }

@@ -6,10 +6,7 @@ import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
-import com.tfkfan.security.enums.UserRole;
 import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
-import com.tfkfan.vaadin.ui.widgets.UserLabel;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -19,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
-
-import java.text.Normalizer.Form;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,11 +48,13 @@ public class ThemeUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		getPage().setTitle("Forum theme");
-		currentUser = SecurityContextUtils.getUser();
 		try {
+			getPage().setTitle("Forum theme");
+			currentUser = SecurityContextUtils.getUser();
+
 			Long id_theme = Long.parseLong(request.getParameter("id"));
 			theme = themeDao.get(id_theme);
+
 			Set<Message> messages = new HashSet<Message>();
 			if (theme != null) {
 				getPage().setTitle(theme.getTitle() + " theme");
@@ -116,6 +113,9 @@ public class ThemeUI extends UI {
 	}
 
 	protected void addMessageClick(String text) {
+		if (theme == null)
+			return;
+
 		String date = LocalDateTime.now().toString();
 		Message message = new Message(text, date, theme, currentUser);
 		messageDao.save(message);

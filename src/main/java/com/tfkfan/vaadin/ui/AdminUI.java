@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 
 @Theme("Demo")
 @SpringUI(path = "/admin")
@@ -54,7 +53,7 @@ public class AdminUI extends UI implements ViewDisplay {
 
 	@Override
 	protected void init(VaadinRequest request) {
-		getPage().setTitle("Vaadin Security Demo");
+		getPage().setTitle("Admin module");
 		currentUser = SecurityContextUtils.getUser();
 
 		final VerticalLayout root = new VerticalLayout();

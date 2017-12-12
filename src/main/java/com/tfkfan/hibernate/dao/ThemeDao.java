@@ -3,9 +3,7 @@ package com.tfkfan.hibernate.dao;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.tfkfan.hibernate.entities.Theme;
-import com.tfkfan.hibernate.entities.User;
 
 @Component("themeDao")
 @Scope("singleton")
