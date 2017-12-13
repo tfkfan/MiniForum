@@ -66,6 +66,7 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN");
 		http.authorizeRequests().antMatchers("/theme**").authenticated();
 		http.authorizeRequests().antMatchers("/login/**").anonymous();
+		http.authorizeRequests().antMatchers("/signup/**").anonymous();
 		http.authorizeRequests().antMatchers("/moderate**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')");
 		http.authorizeRequests().antMatchers("/vaadinServlet/UIDL/**").permitAll();
 		http.authorizeRequests().antMatchers("/vaadinServlet/HEARTBEAT/**").permitAll().anyRequest().authenticated();

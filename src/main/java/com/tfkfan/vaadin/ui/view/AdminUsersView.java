@@ -2,7 +2,6 @@ package com.tfkfan.vaadin.ui.view;
 
 import com.tfkfan.hibernate.dao.RoleDao;
 import com.tfkfan.hibernate.dao.UserDao;
-import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.enums.UserRole;
@@ -14,20 +13,17 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.renderers.ButtonRenderer;
-import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.spring.security.VaadinSecurity;
-
 import javax.annotation.PostConstruct;
 import java.util.List;
 
@@ -66,15 +62,13 @@ public class AdminUsersView extends VerticalLayout implements View {
 	}
 
 	protected Grid<User> createUsersGrid() {
-		List<User> users = userDao.listAll();
-		Grid<User> grid = new Grid<>();
-		grid.getEditor().setEnabled(true);
+		Grid<User> grid = new Grid<User>();
 		grid.setSizeFull();
-		grid.setItems(users);
+		grid.setItems(userDao.listAll());
 		grid.addColumn(User::getUsername).setCaption("User Name");
 		grid.addColumn(user -> user.getRole().getRole(), new TextRenderer()).setCaption("Role");
-		grid.addColumn("Edit", new ButtonRenderer<User>(clickEvent -> edit(clickEvent.getItem()))).setCaption("Edit");
-
+		grid.addColumn(user -> "Edit", new ButtonRenderer<User>(clickEvent -> edit(clickEvent.getItem())))
+				.setCaption("Edit");
 		return grid;
 	}
 
@@ -87,18 +81,22 @@ public class AdminUsersView extends VerticalLayout implements View {
 		FormLayout form = new FormLayout();
 
 		TextField usernameField = new TextField("Username");
+		usernameField.setValue(user.getUsername());
 		form.addComponent(usernameField);
 
 		TextField passwordField = new TextField("Password");
+
 		form.addComponent(passwordField);
 
 		NativeSelect<String> select = new NativeSelect<>("Role");
 
 		select.setItems(UserRole.ROLE_ADMIN.getRole(), UserRole.ROLE_USER.getRole(), UserRole.ROLE_MODERATOR.getRole());
+		select.setSelectedItem(user.getRole().getRole());
 
+		form.addComponent(select);
 		HorizontalLayout btns = new HorizontalLayout();
 
-		Button formBtn = new Button("Create");
+		Button formBtn = new Button("Save");
 		formBtn.addClickListener(event -> saveClick(user, usernameField.getValue(), passwordField.getValue(),
 				select.getSelectedItem().get()));
 
@@ -115,19 +113,24 @@ public class AdminUsersView extends VerticalLayout implements View {
 	}
 
 	protected void saveClick(User user, String username, String password, String role_selected) {
+		if (!password.isEmpty())
+			password = passwordEncoder.encode(password);
+
 		Role role = roleDao.getRoleByName(role_selected);
-		
+
 		user.setUsername(username);
-		user.setPassword(password);
+		if (!password.isEmpty())
+			user.setPassword(password);
 		if (role != null)
 			user.setRole(role);
-		
+
 		userDao.update(user);
-		
+
 		Object obj = vaadinSecurity.getAuthentication().getPrincipal();
 		if (obj instanceof User) {
 			((User) obj).setUsername(username);
-			((User) obj).setPassword(password);
+			if (!password.isEmpty())
+				((User) obj).setPassword(password);
 			if (role != null)
 				((User) obj).setRole(role);
 		}

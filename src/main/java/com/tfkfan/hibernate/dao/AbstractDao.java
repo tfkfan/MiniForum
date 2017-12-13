@@ -22,7 +22,7 @@ public abstract class AbstractDao<T> {
 		this.clazz = clazz;
 	}
 
-	public void save(T object) {
+	public void save(T object){
 		if(object instanceof Theme)
 		log.info("SAVED + " + ((Theme)object).getTitle());
 		hTemplate.save(object);
