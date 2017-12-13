@@ -46,8 +46,10 @@ public class ApplicationController {
 
 	@RequestMapping(value = "/put", method = RequestMethod.PUT, produces = "application/json")
 	public ThemeDto addTheme(@RequestBody ThemeDto themeDto) {
+		log.info(themeDto.getAutor());
 		User user = userDao.findByUsername(themeDto.getAutor());
 		if (user != null) {
+			log.info("!" + themeDto.getAutor());
 			Theme theme = new Theme(LocalDateTime.now().toString(), themeDto.getTitle(), user);
 			themeDao.save(theme);
 		}

@@ -14,32 +14,33 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 public class RequestMaker<T> {
 	private Client client;
 	private WebTarget target;
-	
-	public RequestMaker(){
+	private Class<T> clazz;
+
+	public RequestMaker() {
 		init();
 	}
-	
-	public void init(){
+
+	public void init() {
 		client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
 	}
-	
-	public WebTarget getTarget(){
+
+	public WebTarget getTarget() {
 		return target;
 	}
-	
-	public void setTarget(String page){
+
+	public void setTarget(String page) {
 		target = client.target(ServerUtils.getAbsoluteRoot() + page);
 	}
-	
-	public List<T> getList(){
+
+	public List<T> getList(GenericType<List<T>> type) {
 		Response resp = target.request(MediaType.APPLICATION_JSON).get(Response.class);
-		return resp.readEntity(new GenericType<List<T>>() {});
+		return resp.readEntity(type);
 	}
-	
-	
-	public T addEntity(T entity){
-		Response resp = target.request(MediaType.APPLICATION_JSON).put(Entity.json(entity), Response.class);
-		return resp.readEntity(new GenericType<T>() {});
+
+	public T addEntity(T entity, GenericType<T> type) {
+		Response resp = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+				.put(Entity.json(entity), Response.class);
+		return null;
 	}
-	
+
 }

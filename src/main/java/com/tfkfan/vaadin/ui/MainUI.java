@@ -69,10 +69,7 @@ public class MainUI extends UI {
 		List<ThemeDto> themes = new ArrayList<ThemeDto>();
 		try {
 			rm.setTarget("/themes");
-			Response resp = rm.getTarget().request(MediaType.APPLICATION_JSON).get(Response.class);
-			 
-
-			List<ThemeDto> lst = resp.readEntity(new GenericType<List<ThemeDto>>() {});
+			List<ThemeDto> lst = rm.getList(new GenericType<List<ThemeDto>>(){});
 			themes.addAll(lst);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,8 +124,8 @@ public class MainUI extends UI {
 		ThemeDto theme = new ThemeDto(null, themeTitle, LocalDateTime.now().toString(), currentUser.getUsername());
 
 		try {
-			rm.setTarget("/themes/put");
-			rm.addEntity(theme);
+			rm.setTarget("/put");
+			rm.addEntity(theme, new GenericType<ThemeDto>(){});
 			subWindow.close();
 			Page.getCurrent().reload();
 		} catch (Exception e) {
