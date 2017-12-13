@@ -124,7 +124,7 @@ public class MainUI extends UI {
 		ThemeDto theme = new ThemeDto(null, themeTitle, LocalDateTime.now().toString(), currentUser.getUsername());
 
 		try {
-			rm.setTarget("/put");
+			rm.setTarget("/themes/put");
 			rm.addEntity(theme, new GenericType<ThemeDto>(){});
 			subWindow.close();
 			Page.getCurrent().reload();

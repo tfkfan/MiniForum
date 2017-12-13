@@ -40,7 +40,7 @@ public class RequestMaker<T> {
 	public T addEntity(T entity, GenericType<T> type) {
 		Response resp = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.put(Entity.json(entity), Response.class);
-		return null;
+		return resp.readEntity(type);
 	}
 
 }

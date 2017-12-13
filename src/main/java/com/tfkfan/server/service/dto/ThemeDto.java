@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class ThemeDto extends Dto{
 	protected String title;
 	protected String date;

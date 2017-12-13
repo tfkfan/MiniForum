@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/themes")
-public class ApplicationController {
-	private final static Logger log = Logger.getLogger(ApplicationController.class.getName());
+public class ThemesController {
+	private final static Logger log = Logger.getLogger(ThemesController.class.getName());
 
 	@Autowired
 	UserDao userDao;

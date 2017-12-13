@@ -22,7 +22,7 @@ import java.util.Set;
 import static com.tfkfan.server.ServerUtils.THEME_PAGE;
 
 @com.vaadin.annotations.Theme("Demo")
-@SpringUI(path = THEME_PAGE)
+@SpringUI(path = THEME_PAGE )
 public class ThemeUI extends UI {
 
 	private static final long serialVersionUID = 1L;
