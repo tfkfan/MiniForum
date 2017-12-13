@@ -4,7 +4,7 @@ import com.tfkfan.hibernate.dao.MessageDao;
 import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
-import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
+import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
@@ -17,9 +17,10 @@ import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.util.List;
+import static com.tfkfan.server.ServerUtils.MODER_PAGE;
 
 @com.vaadin.annotations.Theme("Demo")
-@SpringUI(path = "/moderate")
+@SpringUI(path = MODER_PAGE)
 public class ModeratorUI extends UI {
 
 	private static final long serialVersionUID = 1L;
@@ -47,7 +48,7 @@ public class ModeratorUI extends UI {
 
 		try {
 			final VerticalLayout root = new VerticalLayout();
-			final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+			final HeaderBarWidget topElems = new HeaderBarWidget(currentUser, vaadinSecurity);
 			topElems.customInit();
 
 			root.addComponent(topElems);

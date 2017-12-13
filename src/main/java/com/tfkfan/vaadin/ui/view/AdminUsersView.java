@@ -1,21 +1,32 @@
 package com.tfkfan.vaadin.ui.view;
 
+import com.tfkfan.hibernate.dao.RoleDao;
 import com.tfkfan.hibernate.dao.UserDao;
+import com.tfkfan.hibernate.entities.Message;
+import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
-import com.vaadin.data.Binder;
-import com.vaadin.data.Binder.Binding;
+import com.tfkfan.security.enums.UserRole;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.Column;
-import com.vaadin.ui.Grid.GridContextClickEvent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.renderers.ButtonRenderer;
+import com.vaadin.ui.renderers.HtmlRenderer;
+import com.vaadin.ui.renderers.TextRenderer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.vaadin.spring.security.VaadinSecurity;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -30,12 +41,21 @@ public class AdminUsersView extends VerticalLayout implements View {
 	@Autowired
 	UserDao userDao;
 
+	@Autowired
+	RoleDao roleDao;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	VaadinSecurity vaadinSecurity;
+
 	@PostConstruct
 	public void init() {
 		addComponent(new Label("This is admin module view"));
-		
+
 		Grid<User> grid = createUsersGrid();
-		
+
 		addComponent(grid);
 		setExpandRatio(grid, 1f);
 	}
@@ -48,23 +68,68 @@ public class AdminUsersView extends VerticalLayout implements View {
 	protected Grid<User> createUsersGrid() {
 		List<User> users = userDao.listAll();
 		Grid<User> grid = new Grid<>();
-		
+		grid.getEditor().setEnabled(true);
 		grid.setSizeFull();
 		grid.setItems(users);
-		
-		TextField nameField = new TextField();
+		grid.addColumn(User::getUsername).setCaption("User Name");
+		grid.addColumn(user -> user.getRole().getRole(), new TextRenderer()).setCaption("Role");
+		grid.addColumn("Edit", new ButtonRenderer<User>(clickEvent -> edit(clickEvent.getItem()))).setCaption("Edit");
 
-
-		grid.addColumn(User::getUsername).setEditorComponent(
-		    nameField, (user, username) -> {
-		    	user.setUsername(username);
-		    	userDao.update(user);
-		    }).setCaption("User Name").setExpandRatio(1);
-
-		grid.getEditor().setEnabled(true);
-		grid.addColumn(User::getPassword).setCaption("Password");
-		
-		
 		return grid;
+	}
+
+	protected void edit(User user) {
+		Window subWindow = new Window("Sub-window");
+		subWindow.setWidth("30%");
+		VerticalLayout subContent = new VerticalLayout();
+		subWindow.setContent(subContent);
+
+		FormLayout form = new FormLayout();
+
+		TextField usernameField = new TextField("Username");
+		form.addComponent(usernameField);
+
+		TextField passwordField = new TextField("Password");
+		form.addComponent(passwordField);
+
+		NativeSelect<String> select = new NativeSelect<>("Role");
+
+		select.setItems(UserRole.ROLE_ADMIN.getRole(), UserRole.ROLE_USER.getRole(), UserRole.ROLE_MODERATOR.getRole());
+
+		HorizontalLayout btns = new HorizontalLayout();
+
+		Button formBtn = new Button("Create");
+		formBtn.addClickListener(event -> saveClick(user, usernameField.getValue(), passwordField.getValue(),
+				select.getSelectedItem().get()));
+
+		Button formCloseBtn = new Button("Close");
+		formCloseBtn.addClickListener(event -> subWindow.close());
+		btns.addComponents(formBtn, formCloseBtn);
+
+		form.addComponent(btns);
+
+		subContent.addComponent(form);
+		subWindow.center();
+
+		getUI().addWindow(subWindow);
+	}
+
+	protected void saveClick(User user, String username, String password, String role_selected) {
+		Role role = roleDao.getRoleByName(role_selected);
+		
+		user.setUsername(username);
+		user.setPassword(password);
+		if (role != null)
+			user.setRole(role);
+		
+		userDao.update(user);
+		
+		Object obj = vaadinSecurity.getAuthentication().getPrincipal();
+		if (obj instanceof User) {
+			((User) obj).setUsername(username);
+			((User) obj).setPassword(password);
+			if (role != null)
+				((User) obj).setRole(role);
+		}
 	}
 }

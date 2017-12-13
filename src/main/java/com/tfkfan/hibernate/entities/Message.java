@@ -100,8 +100,6 @@ public class Message {
 			return true;
 		if (obj == null || obj.getClass() != this.getClass())
 			return false;
-		if (!(obj instanceof Message))
-			return false;
 
 		Message msg = (Message) obj;
 		return id == msg.id;

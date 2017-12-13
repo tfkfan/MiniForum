@@ -7,9 +7,9 @@ import com.vaadin.ui.Label;
 
 public class UserLabel extends Label {
 	private static final long serialVersionUID = 1L;
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM-dd HH:mm:ss");
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-mm HH:mm:ss");
 
 	public UserLabel(String username) {
-		super("You are signed up as (" + username + "). " + formatter.format(LocalDateTime.now()));
+		super("You are signed in as (" + username + "). " + formatter.format(LocalDateTime.now()));
 	}
 }

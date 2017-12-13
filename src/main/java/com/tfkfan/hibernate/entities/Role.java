@@ -41,5 +41,15 @@ public class Role {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj == null || obj.getClass() != this.getClass())
+			return false;
 
+		Role role = (Role) obj;
+		return id == role.getId();
+	}
 }

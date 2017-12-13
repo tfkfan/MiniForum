@@ -85,4 +85,14 @@ public class Theme {
 		this.messages = messages;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj == null || obj.getClass() != this.getClass())
+			return false;
+
+		Theme theme = (Theme)obj;
+		return id == theme.getId();
+	}
 }

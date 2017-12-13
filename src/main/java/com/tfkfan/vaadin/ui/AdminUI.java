@@ -5,7 +5,7 @@ import com.tfkfan.security.SecurityContextUtils;
 import com.tfkfan.vaadin.ui.view.AccessDeniedView;
 import com.tfkfan.vaadin.ui.view.AdminUsersView;
 import com.tfkfan.vaadin.ui.view.ErrorView;
-import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
+import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
@@ -20,9 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
+import static com.tfkfan.server.ServerUtils.ADMIN_PAGE;
 
 @Theme("Demo")
-@SpringUI(path = "/admin")
+@SpringUI(path = ADMIN_PAGE)
 @SpringViewDisplay
 public class AdminUI extends UI implements ViewDisplay {
 	private static final long serialVersionUID = 1L;
@@ -57,7 +58,7 @@ public class AdminUI extends UI implements ViewDisplay {
 		currentUser = SecurityContextUtils.getUser();
 
 		final VerticalLayout root = new VerticalLayout();
-		final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+		final HeaderBarWidget topElems = new HeaderBarWidget(currentUser, vaadinSecurity);
 		topElems.customInit();
 
 		final CssLayout navigationBar = new CssLayout();

@@ -6,7 +6,7 @@ import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
-import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
+import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -19,9 +19,10 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import static com.tfkfan.server.ServerUtils.THEME_PAGE;
 
 @com.vaadin.annotations.Theme("Demo")
-@SpringUI(path = "/theme")
+@SpringUI(path = THEME_PAGE)
 public class ThemeUI extends UI {
 
 	private static final long serialVersionUID = 1L;
@@ -62,7 +63,7 @@ public class ThemeUI extends UI {
 			}
 
 			final VerticalLayout root = new VerticalLayout();
-			final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+			final HeaderBarWidget topElems = new HeaderBarWidget(currentUser, vaadinSecurity);
 			topElems.customInit();
 
 			root.setSizeFull();

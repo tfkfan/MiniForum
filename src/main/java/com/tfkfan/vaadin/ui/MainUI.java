@@ -1,10 +1,11 @@
 package com.tfkfan.vaadin.ui;
 
+import com.tfkfan.hibernate.dao.AbstractDao;
 import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
-import com.tfkfan.vaadin.ui.widgets.HeadUserWidget;
+import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -17,11 +18,14 @@ import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Logger;
+
+import static com.tfkfan.server.ServerUtils.HOME_PAGE;
 
 @com.vaadin.annotations.Theme("Demo")
-@SpringUI(path = "/")
+@SpringUI(path = HOME_PAGE)
 public class MainUI extends UI {
-
+	private final static Logger log = Logger.getLogger(MainUI.class.getName());
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -46,7 +50,7 @@ public class MainUI extends UI {
 		currentUser = SecurityContextUtils.getUser();
 
 		final VerticalLayout root = new VerticalLayout();
-		final HeadUserWidget topElems = new HeadUserWidget(currentUser, vaadinSecurity);
+		final HeaderBarWidget topElems = new HeaderBarWidget(currentUser, vaadinSecurity);
 		topElems.customInit();
 
 		root.setSizeFull();
@@ -65,6 +69,8 @@ public class MainUI extends UI {
 
 		root.addComponent(grid);
 		root.setExpandRatio(grid, 1f);
+
+		root.addComponent(new Button("Add Theme", event -> showModalWindow()));
 
 		setContent(root);
 	}
@@ -97,9 +103,9 @@ public class MainUI extends UI {
 	}
 
 	protected void addThemeClick(Window subWindow, String themeTitle) {
+		log.info("THEME + " + themeTitle);
 		User currentUser = SecurityContextUtils.getUser();
 		Theme theme = new Theme(LocalDateTime.now().toString(), themeTitle, currentUser);
-
 		themeDao.save(theme);
 
 		subWindow.close();

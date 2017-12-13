@@ -1,13 +1,18 @@
 package com.tfkfan.hibernate.dao;
 
 import java.util.List;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.tfkfan.hibernate.entities.Theme;
+
 @Transactional
 public abstract class AbstractDao<T> {
-
+	private final static Logger log = Logger.getLogger(AbstractDao.class.getName());
+	
 	@Autowired
 	protected HibernateTemplate hTemplate;
 
@@ -18,6 +23,8 @@ public abstract class AbstractDao<T> {
 	}
 
 	public void save(T object) {
+		if(object instanceof Theme)
+		log.info("SAVED + " + ((Theme)object).getTitle());
 		hTemplate.save(object);
 	}
 

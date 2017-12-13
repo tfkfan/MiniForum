@@ -19,15 +19,15 @@ public class User {
 
 	@Column(name = "password")
 	protected String password;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_role")
 	protected Role role;
-	
-	@OneToMany (mappedBy = "autor")
+
+	@OneToMany(mappedBy = "autor")
 	protected Set<Theme> themes = new HashSet<Theme>();
-	
-	@OneToMany (mappedBy = "user")
+
+	@OneToMany(mappedBy = "user")
 	protected Set<Message> messages = new HashSet<Message>();
 
 	public User() {
@@ -62,7 +62,7 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public Role getRole() {
 		return role;
 	}
@@ -70,7 +70,7 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
+
 	public Set<Theme> getThemes() {
 		return themes;
 	}
@@ -78,7 +78,7 @@ public class User {
 	public void setThemes(Set<Theme> themes) {
 		this.themes = themes;
 	}
-	
+
 	public Set<Message> getMessages() {
 		return messages;
 	}
@@ -87,4 +87,14 @@ public class User {
 		this.messages = messages;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (obj == null || obj.getClass() != this.getClass())
+			return false;
+
+		User user = (User) obj;
+		return id == user.getId();
+	}
 }
