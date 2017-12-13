@@ -14,7 +14,6 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -25,7 +24,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Secured({ "ROLE_ADMIN" })
 @SpringView(name = AdminUsersView.VIEW_NAME)

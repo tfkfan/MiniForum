@@ -1,6 +1,5 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.AbstractDao;
 import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;

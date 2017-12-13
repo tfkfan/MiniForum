@@ -8,6 +8,6 @@ public class UserAlreadyExistsException extends Exception {
 	}
 
 	public UserAlreadyExistsException(String username) {
-		super("User already exists with username: '" + username + "'");
+		super("Incorrect username");
 	}
 }
