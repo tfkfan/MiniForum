@@ -76,6 +76,10 @@ dependencyManagement {
 }
 
 dependencies {
+	compile 'com.github.jmnarloch:spring-jax-rs-client-proxy:1.0.2'
+	compile 'org.apache.cxf:cxf-rt-rs-client:3.2.1'
+	compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.3'
+
     compile 'com.vaadin:vaadin-spring-boot-starter'
     compile 'org.vaadin.spring.extensions:vaadin-spring-ext-boot'
     compile 'org.vaadin.spring.extensions:vaadin-spring-ext-security'

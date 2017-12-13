@@ -10,6 +10,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -44,6 +45,7 @@ import org.vaadin.spring.security.shared.VaadinUrlAuthenticationSuccessHandler;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, proxyTargetClass = true)
 @EnableVaadinSharedSecurity
 @EnableJpaAuditing
+@ComponentScan("com.tfkfan")
 public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -63,6 +65,8 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
+		http.authorizeRequests().antMatchers("/themes**").permitAll();
+		
 		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN");
 		http.authorizeRequests().antMatchers("/theme**").authenticated();
 		http.authorizeRequests().antMatchers("/login/**").anonymous();

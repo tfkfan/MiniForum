@@ -1,5 +1,6 @@
 package com.tfkfan.hibernate.entities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "themes")
-public class Theme {
+public class Theme{
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.tfkfan.hibernate.entities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
 
 	@Id
 	@Column(name = "id")

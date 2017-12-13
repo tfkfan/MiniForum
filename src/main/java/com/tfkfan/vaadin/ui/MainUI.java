@@ -1,9 +1,13 @@
 package com.tfkfan.vaadin.ui;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.server.RequestMaker;
+import com.tfkfan.server.ServerUtils;
+import com.tfkfan.server.service.dto.ThemeDto;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -15,7 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -33,14 +45,13 @@ public class MainUI extends UI {
 	@Autowired
 	VaadinSecurity vaadinSecurity;
 
-	@Autowired
-	ThemeDao themeDao;
-
 	User currentUser;
 
-	@PostConstruct
-	public void init() {
+	private RequestMaker<ThemeDto> rm;
 
+	@PostConstruct
+	protected void init() {
+		rm = new RequestMaker<ThemeDto>();
 	}
 
 	@Override
@@ -55,16 +66,26 @@ public class MainUI extends UI {
 		root.setSizeFull();
 		root.addComponent(topElems);
 
-		List<Theme> themes = themeDao.listAll();
+		List<ThemeDto> themes = new ArrayList<ThemeDto>();
+		try {
+			rm.setTarget("/themes");
+			Response resp = rm.getTarget().request(MediaType.APPLICATION_JSON).get(Response.class);
+			 
 
-		Grid<Theme> grid = new Grid<Theme>();
+			List<ThemeDto> lst = resp.readEntity(new GenericType<List<ThemeDto>>() {});
+			themes.addAll(lst);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		Grid<ThemeDto> grid = new Grid<ThemeDto>();
 		grid.setSizeFull();
 		grid.setItems(themes);
 
 		grid.addColumn(theme -> "<a href='/theme?id=" + theme.getId() + "' target='_top'>" + theme.getTitle() + "</a>",
 				new HtmlRenderer()).setCaption("Title");
-		grid.addColumn(theme -> theme.getAutor().getUsername(), new TextRenderer()).setCaption("Autor");
-		grid.addColumn(Theme::getDate).setCaption("Date");
+		grid.addColumn(theme -> theme.getAutor(), new TextRenderer()).setCaption("Autor");
+		grid.addColumn(ThemeDto::getDate).setCaption("Date");
 
 		root.addComponent(grid);
 		root.setExpandRatio(grid, 1f);
@@ -102,12 +123,16 @@ public class MainUI extends UI {
 	}
 
 	protected void addThemeClick(Window subWindow, String themeTitle) {
-		log.info("THEME + " + themeTitle);
 		User currentUser = SecurityContextUtils.getUser();
-		Theme theme = new Theme(LocalDateTime.now().toString(), themeTitle, currentUser);
-		themeDao.save(theme);
+		ThemeDto theme = new ThemeDto(null, themeTitle, LocalDateTime.now().toString(), currentUser.getUsername());
 
-		subWindow.close();
-		Page.getCurrent().reload();
+		try {
+			rm.setTarget("/themes/put");
+			rm.addEntity(theme);
+			subWindow.close();
+			Page.getCurrent().reload();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

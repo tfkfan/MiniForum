@@ -7,4 +7,8 @@ public class ServerUtils {
 	public static final String THEME_PAGE = "/theme";
 	public static final String LOGIN_PAGE = "/login";
 	public static final String SIGNUP_PAGE = "/signup";
+	
+	public static String getAbsoluteRoot(){
+		return "http://localhost:8080";
+	}
 }
