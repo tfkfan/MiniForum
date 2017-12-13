@@ -1,41 +1,50 @@
 package com.tfkfan.hibernate.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id;
-	
-	@Column(name = "name")
-	protected String name;
-	
+
+	@Column(name = "username")
+	protected String username;
+
 	@Column(name = "password")
 	protected String password;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_role")
+	protected Role role;
+	
+	@OneToMany (mappedBy = "autor")
+	protected Set<Theme> themes = new HashSet<Theme>();
+	
+	@OneToMany (mappedBy = "user")
+	protected Set<Message> messages = new HashSet<Message>();
 
 	public User() {
 
 	}
-	
+
+	public User(String username, String password) {
+		setUsername(username);
+		setPassword(password);
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public User(String name, String password) {
-		setName(name);
-		setPassword(password);
 	}
 
 	public int getId() {
@@ -46,11 +55,36 @@ public class User {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
+	
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	
+	public Set<Theme> getThemes() {
+		return themes;
+	}
+
+	public void setThemes(Set<Theme> themes) {
+		this.themes = themes;
+	}
+	
+	public Set<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(Set<Message> messages) {
+		this.messages = messages;
+	}
+
 }
