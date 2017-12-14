@@ -15,6 +15,7 @@ import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.server.service.dto.ThemeDto;
+import com.tfkfan.server.service.impl.ThemeService;
 
 import static com.tfkfan.server.ServerUtils.LOGIN_PAGE;
 import static com.tfkfan.server.ServerUtils.SIGNUP_PAGE;
@@ -29,41 +30,23 @@ import java.util.logging.Logger;
 @RequestMapping("/themes")
 public class ThemesController {
 	private final static Logger log = Logger.getLogger(ThemesController.class.getName());
-
+	
 	@Autowired
-	UserDao userDao;
-
-	@Autowired
-	ThemeDao themeDao;
+	ThemeService themeService;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<ThemeDto> themes() {
-		List<Theme> tms = themeDao.listAll();
-		List<ThemeDto> resp = new ArrayList<ThemeDto>();
-		for (Theme t : tms)
-			resp.add(new ThemeDto(t.getId(), t.getTitle(), t.getDate(), t.getAutor().getUsername()));
-		return resp;
+	public List<ThemeDto> themes() throws Exception {
+		return themeService.listAllDTO();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ThemeDto theme(@PathVariable Long id) {
-		Theme t = themeDao.get(id);
-		if(t != null) {
-			ThemeDto resp = new ThemeDto(id, t.getTitle(), t.getDate(), t.getAutor().getUsername());
-			return resp;
-		}
-		return null;
+	public ThemeDto theme(@PathVariable Long id) throws Exception {
+		return themeService.getDTO(id);
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.PUT)
-	public void addTheme(@RequestBody ThemeDto themeDto) {
-		log.info(themeDto.getAutor());
-		User user = userDao.findByUsername(themeDto.getAutor());
-		if (user != null) {
-			log.info("!" + themeDto.getAutor());
-			Theme theme = new Theme(LocalDateTime.now().toString(), themeDto.getTitle(), user);
-			themeDao.save(theme);
-		}
+	public void addTheme(@RequestBody ThemeDto themeDto) throws Exception {
+		themeService.addTheme(themeDto);
 	}
 
 }
