@@ -2,12 +2,10 @@ package com.tfkfan.vaadin.ui;
 
 import com.tfkfan.vaadin.ui.widgets.AuthForm;
 import com.vaadin.annotations.Theme;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;

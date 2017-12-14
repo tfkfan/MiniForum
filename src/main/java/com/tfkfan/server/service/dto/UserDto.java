@@ -20,6 +20,17 @@ public class UserDto extends Dto {
 		setPassword(password);
 		setRole(role);
 	}
+	
+	public UserDto(String username, String password, String role) {
+		setUsername(username);
+		setPassword(password);
+		setRole(role);
+	}
+	
+	public UserDto(String username, String password) {
+		setUsername(username);
+		setPassword(password);
+	}
 
 	public String getUsername() {
 		return username;

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tfkfan.hibernate.dao.RoleDao;
+import com.tfkfan.hibernate.dao.UserAlreadyExistsException;
 import com.tfkfan.hibernate.dao.UserDao;
 import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
+import com.tfkfan.security.enums.UserRole;
 import com.tfkfan.server.service.dto.UserDto;
 
 @RestController
@@ -43,7 +45,6 @@ public class AdminController {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public void updateUser(@RequestBody UserDto userDto) {
-		log.info("hi admin");
 		User user = userDao.get(userDto.getId());
 		if(user != null) {
 			user.setUsername(userDto.getUsername());
@@ -55,6 +56,23 @@ public class AdminController {
 					user.setRole(role);
 			}
 			userDao.update(user);
+		}
+	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.PUT)
+	public void addUser(@RequestBody UserDto userDto) throws UserAlreadyExistsException{
+		User user = userDao.findByUsername(userDto.getUsername());
+		if(user != null) {
+			log.info("already exists");
+			throw new UserAlreadyExistsException("Invalid username");
+		}else {
+			user = new User();
+			user.setUsername(userDto.getUsername());
+			if(!userDto.getPassword().isEmpty())
+				user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+			user.setRole(roleDao.getRoleByName(UserRole.ROLE_USER.getRole()));
+			
+			userDao.save(user);
 		}
 	}
 }

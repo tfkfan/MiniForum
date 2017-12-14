@@ -76,6 +76,7 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/_admin**").permitAll();
 		http.authorizeRequests().antMatchers("/_admin/{id}**").permitAll();
 		http.authorizeRequests().antMatchers("/_admin/update**").permitAll();
+		http.authorizeRequests().antMatchers("/_admin/add**").permitAll();
 		
 	
 		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN");
