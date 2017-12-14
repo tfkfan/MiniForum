@@ -47,7 +47,7 @@ public class ThemesController {
 	}
 
 	@RequestMapping(value = "/put", method = RequestMethod.PUT)
-	public ThemeDto addTheme(@RequestBody ThemeDto themeDto) {
+	public void addTheme(@RequestBody ThemeDto themeDto) {
 		log.info(themeDto.getAutor());
 		User user = userDao.findByUsername(themeDto.getAutor());
 		if (user != null) {
@@ -55,7 +55,6 @@ public class ThemesController {
 			Theme theme = new Theme(LocalDateTime.now().toString(), themeDto.getTitle(), user);
 			themeDao.save(theme);
 		}
-		return themeDto;
 	}
 
 	

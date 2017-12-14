@@ -43,12 +43,10 @@ public class RequestMaker<T> {
 		return objects;
 	}
 
-	public T put(HttpEntity<T> entity, String url, ParameterizedTypeReference<T> type) { 
-		ResponseEntity<T> responseEntity = temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.PUT,
+	public void put(HttpEntity<T> entity, String url, ParameterizedTypeReference<T> type) {
+		log.info(ServerUtils.getAbsoluteRoot() + url);
+		temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.PUT,
 				entity, clazz);
-		T object = responseEntity.getBody();
-		log.info(object.toString());
-		return object;
 	}
 
 }
