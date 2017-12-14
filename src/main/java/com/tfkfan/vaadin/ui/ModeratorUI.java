@@ -1,7 +1,5 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.MessageDao;
-import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
 import com.tfkfan.server.RequestMaker;
@@ -17,7 +15,6 @@ import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -34,7 +31,6 @@ public class ModeratorUI extends UI {
 
 	@Autowired
 	VaadinSecurity vaadinSecurity;
-
 
 	User currentUser = SecurityContextUtils.getUser();
 	List<MessageDto> messages;
@@ -57,8 +53,10 @@ public class ModeratorUI extends UI {
 
 			root.addComponent(topElems);
 
+
 			messages = rm.get("/messages/not_published", new ParameterizedTypeReference<List<MessageDto>>() {});
 			Grid<MessageDto> grid = new Grid<MessageDto>();
+
 			grid.setSizeFull();
 			grid.setItems(messages);
 
@@ -78,6 +76,7 @@ public class ModeratorUI extends UI {
 			e.printStackTrace();
 		}
 	}
+
 
 	protected void publishClick(RendererClickEvent<MessageDto> clickEvent, Grid<MessageDto> grid) {
 		MessageDto msg = clickEvent.getItem();

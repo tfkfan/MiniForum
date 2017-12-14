@@ -1,9 +1,6 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.MessageDao;
-import com.tfkfan.hibernate.dao.ThemeDao;
-import com.tfkfan.hibernate.entities.Message;
-import com.tfkfan.hibernate.entities.Theme;
+
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
 import com.tfkfan.server.RequestMaker;
@@ -18,14 +15,11 @@ import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import static com.tfkfan.server.ServerUtils.HOME_PAGE;
 import static com.tfkfan.server.ServerUtils.THEME_PAGE;
 
@@ -60,11 +54,12 @@ public class ThemeUI extends UI {
 			currentUser = SecurityContextUtils.getUser();
 
 			String param = request.getParameter("id");
+
 			if (param == null) {
 				getPage().setLocation(HOME_PAGE);
 				return;
 			}
-			
+
 			Long id_theme = Long.parseLong(param);
 
 			theme = rm.get("/themes/" + id_theme);
@@ -132,8 +127,7 @@ public class ThemeUI extends UI {
 		if (theme == null)
 			return;
 
-		msgRm.put(new MessageDto(theme.getId(), currentUser.getId(), text),
-				"/messages/add");
+		msgRm.put(new MessageDto(theme.getId(), currentUser.getId(), text), "/messages/add");
 
 		Page.getCurrent().reload();
 

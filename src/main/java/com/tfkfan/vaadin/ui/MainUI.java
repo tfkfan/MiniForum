@@ -1,12 +1,8 @@
 package com.tfkfan.vaadin.ui;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.tfkfan.hibernate.dao.ThemeDao;
-import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
 import com.tfkfan.server.RequestMaker;
-import com.tfkfan.server.ServerUtils;
 import com.tfkfan.server.service.dto.ThemeDto;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
@@ -18,16 +14,8 @@ import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +55,7 @@ public class MainUI extends UI {
 
 		root.setSizeFull();
 		root.addComponent(topElems);
+
 
 		List<ThemeDto> themes = new ArrayList<ThemeDto>();
 		try {
@@ -122,6 +111,7 @@ public class MainUI extends UI {
 
 	protected void addThemeClick(Window subWindow, String themeTitle) {
 		User currentUser = SecurityContextUtils.getUser();
+
 		ThemeDto theme = new ThemeDto(null, themeTitle, LocalDateTime.now().toString(), currentUser.getUsername());
 
 		try {

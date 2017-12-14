@@ -1,6 +1,5 @@
 package com.tfkfan.vaadin.ui.view;
 
-import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.enums.UserRole;
 import com.tfkfan.server.RequestMaker;
 import com.tfkfan.server.service.dto.UserDto;
@@ -20,13 +19,10 @@ import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.spring.security.VaadinSecurity;
-
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 @Secured({ "ROLE_ADMIN" })
@@ -36,7 +32,9 @@ public class AdminUsersView extends VerticalLayout implements View {
 
 	public static final String VIEW_NAME = "admin";
 
+
 	private RequestMaker<UserDto> rm;
+
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -64,6 +62,7 @@ public class AdminUsersView extends VerticalLayout implements View {
 	protected Grid<UserDto> createUsersGrid() {
 		Grid<UserDto> grid = new Grid<UserDto>();
 		grid.setSizeFull();
+
 		grid.setItems(rm.get("/_admin", new ParameterizedTypeReference<List<UserDto>>() {
 		}));
 		grid.addColumn(UserDto::getUsername).setCaption("User Name");
@@ -99,6 +98,7 @@ public class AdminUsersView extends VerticalLayout implements View {
 		HorizontalLayout btns = new HorizontalLayout();
 
 		Button formBtn = new Button("Save");
+
 		formBtn.addClickListener(event -> {
 			saveClick(user, usernameField.getValue(), passwordField.getValue(), select.getSelectedItem().get());
 			subWindow.close();
@@ -127,6 +127,5 @@ public class AdminUsersView extends VerticalLayout implements View {
 		user.setPassword(password);
 		user.setRole(role_selected);
 		rm.post(user, "/_admin/update");
-
 	}
 }
