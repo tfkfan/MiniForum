@@ -63,7 +63,7 @@ public class ThemeUI extends UI {
 			Set<MessageDto> messages = new HashSet<MessageDto>();
 			if (theme != null) {
 				getPage().setTitle(theme.getTitle() + " theme");
-				messages.addAll(msgRm.get("/messages", new ParameterizedTypeReference<List<MessageDto>>() {
+				messages.addAll(msgRm.get("/messages/" + theme.getId(), new ParameterizedTypeReference<List<MessageDto>>() {
 				}));
 			}
 

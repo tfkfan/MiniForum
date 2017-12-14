@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @RestController
@@ -37,6 +38,16 @@ public class MessagesController {
 	@RequestMapping(method = RequestMethod.GET)
 	public List<MessageDto> messages() {
 		List<Message> msgs = msgDao.getAllPublishedMessages();
+		List<MessageDto> resp = new ArrayList<MessageDto>();
+		for (Message m : msgs)
+			resp.add(new MessageDto(m.getId(), m.getTheme().getId(), m.getUser().getId(), m.getText(),
+					m.getTheme().getTitle(), m.getDate(), m.getUser().getUsername(), m.getIs_published()));
+		return resp;
+	}
+	
+	@RequestMapping(value = "/{id_theme}", method = RequestMethod.GET)
+	public List<MessageDto> theme_messages(@PathVariable Long id_theme) {
+		Set<Message> msgs = themeDao.get(id_theme).getMessages();
 		List<MessageDto> resp = new ArrayList<MessageDto>();
 		for (Message m : msgs)
 			resp.add(new MessageDto(m.getId(), m.getTheme().getId(), m.getUser().getId(), m.getText(),
