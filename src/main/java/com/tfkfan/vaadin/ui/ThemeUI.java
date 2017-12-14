@@ -132,7 +132,7 @@ public class ThemeUI extends UI {
 		if (theme == null)
 			return;
 
-		msgRm.put(new HttpEntity<MessageDto>(new MessageDto(theme.getId(), currentUser.getId(), text)),
+		msgRm.put(new MessageDto(theme.getId(), currentUser.getId(), text),
 				"/messages/add");
 
 		Page.getCurrent().reload();

@@ -49,7 +49,7 @@ public class SignUpUI extends UI {
 		try {
 			UserDto user = new UserDto(form.getUsername(), form.getPassword());
 			
-			rm.put(new HttpEntity<UserDto>(user), "/_admin/add");
+			rm.put(user, "/_admin/add");
 
 			getPage().setLocation(LOGIN_PAGE);
 		} catch (AuthenticationException ex) {

@@ -29,13 +29,13 @@ public class RequestMaker<T> {
 				null, clazz).getBody();
 	}
 
-	public void put(HttpEntity<T> entity, String url) {
+	public void put(T entity, String url) {
 		temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.PUT,
-				entity, clazz);
+				new HttpEntity<T>(entity), clazz);
 	}
 
-	public void post(HttpEntity<T> entity, String url) {
+	public void post(T entity, String url) {
 		temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.POST,
-				entity, clazz);
+				new HttpEntity<T>(entity), clazz);
 	}
 }

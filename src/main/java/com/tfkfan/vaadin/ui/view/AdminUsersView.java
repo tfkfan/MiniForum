@@ -126,7 +126,7 @@ public class AdminUsersView extends VerticalLayout implements View {
 		user.setUsername(username);
 		user.setPassword(password);
 		user.setRole(role_selected);
-		rm.post(new HttpEntity<UserDto>(user), "/_admin/update");
+		rm.post(user, "/_admin/update");
 
 	}
 }
