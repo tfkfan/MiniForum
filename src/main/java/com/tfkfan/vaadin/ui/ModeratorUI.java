@@ -1,9 +1,9 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.MessageDao;
 import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.server.service.impl.MessageService;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -32,7 +32,7 @@ public class ModeratorUI extends UI {
 	VaadinSecurity vaadinSecurity;
 
 	@Autowired
-	MessageDao messageDao;
+	MessageService msgService;
 
 	User currentUser = SecurityContextUtils.getUser();
 	List<Message> messages;
@@ -53,7 +53,7 @@ public class ModeratorUI extends UI {
 
 			root.addComponent(topElems);
 
-			messages = messageDao.getAllNotPublishedMessages();
+			messages = msgService.listNotPublished();
 			Grid<Message> grid = new Grid<Message>();
 			grid.setSizeFull();
 			grid.setItems(messages);
@@ -77,10 +77,16 @@ public class ModeratorUI extends UI {
 
 	protected void publishClick(RendererClickEvent<Message> clickEvent, Grid<Message> grid) {
 		Message msg = clickEvent.getItem();
-		msg.setIs_published(true);
-		messageDao.update(msg);
-		messages.remove(msg);
-		grid.clearSortOrder();
+
+		try {
+			msgService.publish(msg);
+
+			messages.remove(msg);
+			grid.clearSortOrder();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 }
