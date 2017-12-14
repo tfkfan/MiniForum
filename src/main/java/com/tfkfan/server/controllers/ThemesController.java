@@ -56,7 +56,7 @@ public class ThemesController {
 		return null;
 	}
 
-	@RequestMapping(value = "/put", method = RequestMethod.PUT)
+	@RequestMapping(value = "/add", method = RequestMethod.PUT)
 	public void addTheme(@RequestBody ThemeDto themeDto) {
 		log.info(themeDto.getAutor());
 		User user = userDao.findByUsername(themeDto.getAutor());

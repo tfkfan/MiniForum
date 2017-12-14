@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.tfkfan.hibernate.dao.RoleDao;
 import com.tfkfan.hibernate.dao.UserDao;
+import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.server.service.dto.UserDto;
 
@@ -20,6 +23,9 @@ public class AdminController {
 	private final static Logger log = Logger.getLogger(AdminController.class.getName());
 	@Autowired
 	UserDao userDao;
+	
+	@Autowired
+	RoleDao roleDao;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -43,6 +49,11 @@ public class AdminController {
 			user.setUsername(userDto.getUsername());
 			if(!userDto.getPassword().isEmpty())
 				user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+			if(!userDto.getRole().isEmpty() ) {
+				Role role = roleDao.getRoleByName(userDto.getRole());
+				if(role != null)
+					user.setRole(role);
+			}
 			userDao.update(user);
 		}
 	}

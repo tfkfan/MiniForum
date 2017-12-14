@@ -91,6 +91,7 @@ public class AdminUsersView extends VerticalLayout implements View {
 
 		NativeSelect<String> select = new NativeSelect<>("Role");
 
+		select.clear();
 		select.setItems(UserRole.ROLE_ADMIN.getRole(), UserRole.ROLE_USER.getRole(), UserRole.ROLE_MODERATOR.getRole());
 		select.setSelectedItem(user.getRole());
 
@@ -122,13 +123,9 @@ public class AdminUsersView extends VerticalLayout implements View {
 		else
 			password = "";
 
-		// Role role = roleDao.getRoleByName(role_selected);
-
 		user.setUsername(username);
 		user.setPassword(password);
-		// if (role != null)
-		// user.setRole(role);
-
+		user.setRole(role_selected);
 		rm.post(new HttpEntity<UserDto>(user), "/_admin/update");
 
 	}

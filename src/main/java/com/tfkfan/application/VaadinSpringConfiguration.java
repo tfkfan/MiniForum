@@ -67,7 +67,7 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests().antMatchers("/themes**").permitAll();
 		http.authorizeRequests().antMatchers("/themes/{id}**").permitAll();
-		http.authorizeRequests().antMatchers("/themes/put**").permitAll();
+		http.authorizeRequests().antMatchers("/themes/add**").permitAll();
 		http.authorizeRequests().antMatchers("/messages**").permitAll();
 		http.authorizeRequests().antMatchers("/messages/{id_theme}**").permitAll();
 		http.authorizeRequests().antMatchers("/messages/add**").permitAll();
