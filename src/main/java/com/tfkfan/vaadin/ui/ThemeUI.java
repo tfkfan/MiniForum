@@ -1,11 +1,11 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.MessageDao;
-import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.server.service.impl.MessageService;
+import com.tfkfan.server.service.impl.ThemeService;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import static com.tfkfan.server.ServerUtils.HOME_PAGE;
@@ -35,10 +34,10 @@ public class ThemeUI extends UI {
 	VaadinSecurity vaadinSecurity;
 
 	@Autowired
-	ThemeDao themeDao;
+	ThemeService themeService;
 
 	@Autowired
-	MessageDao messageDao;
+	MessageService msgService;
 
 	Theme theme;
 	User currentUser;
@@ -61,7 +60,7 @@ public class ThemeUI extends UI {
 				return;
 			}
 			Long id_theme = Long.parseLong(param);
-			theme = themeDao.get(id_theme);
+			theme = themeService.get(id_theme);
 
 			Set<Message> messages = new HashSet<Message>();
 			if (theme != null) {
@@ -124,10 +123,12 @@ public class ThemeUI extends UI {
 		if (theme == null)
 			return;
 
-		String date = LocalDateTime.now().toString();
-		Message message = new Message(text, date, theme, currentUser);
-		messageDao.save(message);
-
+		try {
+			msgService.addMessage(text, theme, currentUser);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Page.getCurrent().reload();
 
 	}
