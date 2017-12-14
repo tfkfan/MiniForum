@@ -4,6 +4,7 @@ import com.tfkfan.hibernate.dao.ThemeDao;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.server.service.impl.ThemeService;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -16,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,7 +36,7 @@ public class MainUI extends UI {
 	VaadinSecurity vaadinSecurity;
 
 	@Autowired
-	ThemeDao themeDao;
+	ThemeService themeService;
 
 	User currentUser;
 
@@ -55,7 +57,13 @@ public class MainUI extends UI {
 		root.setSizeFull();
 		root.addComponent(topElems);
 
-		List<Theme> themes = themeDao.listAll();
+		List<Theme> themes = new ArrayList<Theme>();
+		try {
+			themes.addAll(themeService.getAll());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Grid<Theme> grid = new Grid<Theme>();
 		grid.setSizeFull();
@@ -102,12 +110,16 @@ public class MainUI extends UI {
 	}
 
 	protected void addThemeClick(Window subWindow, String themeTitle) {
-		log.info("THEME + " + themeTitle);
 		User currentUser = SecurityContextUtils.getUser();
-		Theme theme = new Theme(LocalDateTime.now().toString(), themeTitle, currentUser);
-		themeDao.save(theme);
 
-		subWindow.close();
-		Page.getCurrent().reload();
+		try {
+			themeService.addTheme(themeTitle, currentUser);
+
+			subWindow.close();
+			Page.getCurrent().reload();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
