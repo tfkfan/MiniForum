@@ -5,6 +5,8 @@ import com.tfkfan.hibernate.dao.UserDao;
 import com.tfkfan.hibernate.entities.Role;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.enums.UserRole;
+import com.tfkfan.server.service.impl.RoleService;
+import com.tfkfan.server.service.impl.UserService;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
@@ -33,10 +35,10 @@ public class AdminUsersView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "admin";
 
 	@Autowired
-	UserDao userDao;
+	UserService userService;
 
 	@Autowired
-	RoleDao roleDao;
+	RoleService roleService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -62,7 +64,12 @@ public class AdminUsersView extends VerticalLayout implements View {
 	protected Grid<User> createUsersGrid() {
 		Grid<User> grid = new Grid<User>();
 		grid.setSizeFull();
-		grid.setItems(userDao.listAll());
+		try {
+			grid.setItems(userService.getAll());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		grid.addColumn(User::getUsername).setCaption("User Name");
 		grid.addColumn(user -> user.getRole().getRole(), new TextRenderer()).setCaption("Role");
 		grid.addColumn(user -> "Edit", new ButtonRenderer<User>(clickEvent -> edit(clickEvent.getItem())))
@@ -95,8 +102,10 @@ public class AdminUsersView extends VerticalLayout implements View {
 		HorizontalLayout btns = new HorizontalLayout();
 
 		Button formBtn = new Button("Save");
-		formBtn.addClickListener(event -> saveClick(user, usernameField.getValue(), passwordField.getValue(),
-				select.getSelectedItem().get()));
+		formBtn.addClickListener(event -> {saveClick(user, usernameField.getValue(), passwordField.getValue(),
+				select.getSelectedItem().get());
+				subWindow.close();
+		});
 
 		Button formCloseBtn = new Button("Close");
 		formCloseBtn.addClickListener(event -> subWindow.close());
@@ -114,7 +123,7 @@ public class AdminUsersView extends VerticalLayout implements View {
 		if (!password.isEmpty())
 			password = passwordEncoder.encode(password);
 
-		Role role = roleDao.getRoleByName(role_selected);
+		Role role = roleService.getByRole(role_selected);
 
 		user.setUsername(username);
 		if (!password.isEmpty())
@@ -122,15 +131,13 @@ public class AdminUsersView extends VerticalLayout implements View {
 		if (role != null)
 			user.setRole(role);
 
-		userDao.update(user);
-
-		Object obj = vaadinSecurity.getAuthentication().getPrincipal();
-		if (obj instanceof User) {
-			((User) obj).setUsername(username);
-			if (!password.isEmpty())
-				((User) obj).setPassword(password);
-			if (role != null)
-				((User) obj).setRole(role);
+		try {
+			userService.update(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
 	}
 }
