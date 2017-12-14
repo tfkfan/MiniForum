@@ -17,6 +17,8 @@ import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import javax.ws.rs.client.Client;
@@ -51,7 +53,7 @@ public class MainUI extends UI {
 
 	@PostConstruct
 	protected void init() {
-		rm = new RequestMaker<ThemeDto>();
+		rm = new RequestMaker<>(ThemeDto.class);
 	}
 
 	@Override
@@ -68,8 +70,7 @@ public class MainUI extends UI {
 
 		List<ThemeDto> themes = new ArrayList<ThemeDto>();
 		try {
-			rm.setTarget("/themes");
-			List<ThemeDto> lst = rm.getList(new GenericType<List<ThemeDto>>(){});
+			List<ThemeDto> lst = rm.get("/themes", new ParameterizedTypeReference<List<ThemeDto>>() {});
 			themes.addAll(lst);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,8 +125,8 @@ public class MainUI extends UI {
 		ThemeDto theme = new ThemeDto(null, themeTitle, LocalDateTime.now().toString(), currentUser.getUsername());
 
 		try {
-			rm.setTarget("/themes/put");
-			rm.addEntity(theme, new GenericType<ThemeDto>(){});
+			//rm.setPath("/themes/put");
+			rm.put(new HttpEntity<ThemeDto>(theme), "/themes/put", new ParameterizedTypeReference<ThemeDto>() {});
 			subWindow.close();
 			Page.getCurrent().reload();
 		} catch (Exception e) {

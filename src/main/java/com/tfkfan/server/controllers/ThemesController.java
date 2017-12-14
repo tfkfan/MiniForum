@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.ws.rs.core.MediaType;
+
 @RestController
 @RequestMapping("/themes")
 public class ThemesController {
@@ -35,7 +37,7 @@ public class ThemesController {
 	ThemeDao themeDao;
 
 
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(method = RequestMethod.GET)
 	public List<ThemeDto> themes() {
 		List<Theme> tms = themeDao.listAll();
 		List<ThemeDto> resp = new ArrayList<ThemeDto>();
@@ -44,7 +46,7 @@ public class ThemesController {
 		return resp;
 	}
 
-	@RequestMapping(value = "/put", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/put", method = RequestMethod.PUT)
 	public ThemeDto addTheme(@RequestBody ThemeDto themeDto) {
 		log.info(themeDto.getAutor());
 		User user = userDao.findByUsername(themeDto.getAutor());

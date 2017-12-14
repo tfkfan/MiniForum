@@ -1,46 +1,54 @@
 package com.tfkfan.server;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 public class RequestMaker<T> {
-	private Client client;
-	private WebTarget target;
+	private final static Logger log = Logger.getLogger(RequestMaker.class.getName());
+
 	private Class<T> clazz;
 
-	public RequestMaker() {
-		init();
+	private RestTemplate temp;
+
+	public RequestMaker(Class<T> clazz) {
+		this.clazz = clazz;
+		temp = new RestTemplate();
+
 	}
 
-	public void init() {
-		client = ClientBuilder.newClient().register(JacksonJsonProvider.class);
+	public List<T> get(String url,ParameterizedTypeReference<List<T>> type) {
+		ResponseEntity<List<T>> responseEntity = temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.GET,
+				null, type);
+		List<T> objects = responseEntity.getBody();
+		return objects;
 	}
 
-	public WebTarget getTarget() {
-		return target;
-	}
-
-	public void setTarget(String page) {
-		target = client.target(ServerUtils.getAbsoluteRoot() + page);
-	}
-
-	public List<T> getList(GenericType<List<T>> type) {
-		Response resp = target.request(MediaType.APPLICATION_JSON).get(Response.class);
-		return resp.readEntity(type);
-	}
-
-	public T addEntity(T entity, GenericType<T> type) {
-		Response resp = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.put(Entity.json(entity), Response.class);
-		return resp.readEntity(type);
+	public T put(HttpEntity<T> entity, String url, ParameterizedTypeReference<T> type) { 
+		ResponseEntity<T> responseEntity = temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.PUT,
+				entity, clazz);
+		T object = responseEntity.getBody();
+		log.info(object.toString());
+		return object;
 	}
 
 }

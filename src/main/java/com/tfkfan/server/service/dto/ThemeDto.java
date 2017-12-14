@@ -1,27 +1,26 @@
 package com.tfkfan.server.service.dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-public class ThemeDto extends Dto{
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ThemeDto extends Dto {
 	protected String title;
 	protected String date;
 	protected String autor;
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	public ThemeDto(){
-		
+
+	public ThemeDto() {
+
 	}
-	
-	public ThemeDto(Long id, String title, String date, String autor){
+
+	public ThemeDto(Long id, String title, String date, String autor) {
 		setId(id);
 		setTitle(title);
 		setDate(date);
 		setAutor(autor);
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -44,5 +43,11 @@ public class ThemeDto extends Dto{
 
 	public void setAutor(String autor) {
 		this.autor = autor;
+	}
+
+	@Override
+	public String toString() {
+		return "ThemeDto{" + getId() != null ? "id=" + getId()
+				: "" + ", title='" + getTitle() + "', autor='" + getAutor() + "', date='" + getDate() + "'}";
 	}
 }
