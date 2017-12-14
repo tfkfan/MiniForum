@@ -82,7 +82,7 @@ public class ModeratorUI extends UI {
 	protected void publishClick(RendererClickEvent<MessageDto> clickEvent, Grid<MessageDto> grid) {
 		MessageDto msg = clickEvent.getItem();
 		msg.setIs_published(true);
-		rm.patch(null, "/messages/publish/" + msg.getId());
+		rm.post(null, "/messages/publish/" + msg.getId());
 		messages.remove(msg);
 		grid.clearSortOrder();
 

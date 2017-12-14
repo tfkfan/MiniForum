@@ -34,8 +34,8 @@ public class RequestMaker<T> {
 				entity, clazz);
 	}
 
-	public void patch(HttpEntity<T> entity, String url) {
-		temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.PATCH,
+	public void post(HttpEntity<T> entity, String url) {
+		temp.exchange(ServerUtils.getAbsoluteRoot() + url, HttpMethod.POST,
 				entity, clazz);
 	}
 }

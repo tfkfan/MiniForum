@@ -21,4 +21,9 @@ public class MessageDao extends AbstractDao<Message> {
 	public List<Message> getAllNotPublishedMessages() {
 		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='false'");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Message> getAllPublishedMessages() {
+		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='true'");
+	}
 }

@@ -36,7 +36,7 @@ public class MessagesController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<MessageDto> messages() {
-		List<Message> msgs = msgDao.listAll();
+		List<Message> msgs = msgDao.getAllPublishedMessages();
 		List<MessageDto> resp = new ArrayList<MessageDto>();
 		for (Message m : msgs)
 			resp.add(new MessageDto(m.getId(), m.getTheme().getId(), m.getUser().getId(), m.getText(),
@@ -54,7 +54,7 @@ public class MessagesController {
 		return resp;
 	}
 
-	@RequestMapping(value = "/publish/{id}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/publish/{id}", method = RequestMethod.POST)
 	public void publishMessage(@PathVariable Long id) {
 		Message msg = msgDao.get(id);
 		if (msg != null) {
