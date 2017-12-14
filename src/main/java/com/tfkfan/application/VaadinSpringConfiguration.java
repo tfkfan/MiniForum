@@ -66,7 +66,12 @@ public class VaadinSpringConfiguration extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		
 		http.authorizeRequests().antMatchers("/themes**").permitAll();
+		http.authorizeRequests().antMatchers("/themes/{id}**").permitAll();
 		http.authorizeRequests().antMatchers("/themes/put**").permitAll();
+		http.authorizeRequests().antMatchers("/messages**").permitAll();
+		http.authorizeRequests().antMatchers("/messages/add**").permitAll();
+		http.authorizeRequests().antMatchers("/messages/not_published**").permitAll();
+		http.authorizeRequests().antMatchers("/messages/publish/{id}**").permitAll();
 	
 		http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN");
 		http.authorizeRequests().antMatchers("/theme**").authenticated();

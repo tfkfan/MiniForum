@@ -1,6 +1,7 @@
 package com.tfkfan.server.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +37,6 @@ public class ThemesController {
 	@Autowired
 	ThemeDao themeDao;
 
-
 	@RequestMapping(method = RequestMethod.GET)
 	public List<ThemeDto> themes() {
 		List<Theme> tms = themeDao.listAll();
@@ -44,6 +44,16 @@ public class ThemesController {
 		for (Theme t : tms)
 			resp.add(new ThemeDto(t.getId(), t.getTitle(), t.getDate(), t.getAutor().getUsername()));
 		return resp;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ThemeDto theme(@PathVariable Long id) {
+		Theme t = themeDao.get(id);
+		if(t != null) {
+			ThemeDto resp = new ThemeDto(id, t.getTitle(), t.getDate(), t.getAutor().getUsername());
+			return resp;
+		}
+		return null;
 	}
 
 	@RequestMapping(value = "/put", method = RequestMethod.PUT)
@@ -57,5 +67,4 @@ public class ThemesController {
 		}
 	}
 
-	
 }

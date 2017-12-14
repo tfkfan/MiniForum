@@ -4,6 +4,8 @@ import com.tfkfan.hibernate.dao.MessageDao;
 import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.server.RequestMaker;
+import com.tfkfan.server.service.dto.MessageDto;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
@@ -14,6 +16,8 @@ import com.vaadin.ui.renderers.HtmlRenderer;
 import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -31,15 +35,15 @@ public class ModeratorUI extends UI {
 	@Autowired
 	VaadinSecurity vaadinSecurity;
 
-	@Autowired
-	MessageDao messageDao;
 
 	User currentUser = SecurityContextUtils.getUser();
-	List<Message> messages;
+	List<MessageDto> messages;
+	
+	private RequestMaker<MessageDto> rm;
 
 	@PostConstruct
 	public void init() {
-
+		rm = new RequestMaker<MessageDto>(MessageDto.class);
 	}
 
 	@Override
@@ -53,18 +57,18 @@ public class ModeratorUI extends UI {
 
 			root.addComponent(topElems);
 
-			messages = messageDao.getAllNotPublishedMessages();
-			Grid<Message> grid = new Grid<Message>();
+			messages = rm.get("/messages/not_published", new ParameterizedTypeReference<List<MessageDto>>() {});
+			Grid<MessageDto> grid = new Grid<MessageDto>();
 			grid.setSizeFull();
 			grid.setItems(messages);
 
-			grid.addColumn(message -> "<a href='/theme?id=" + message.getTheme().getId() + "' target='_top'>"
-					+ message.getTheme().getTitle() + "</a>", new HtmlRenderer()).setCaption("Theme");
+			grid.addColumn(message -> "<a href='/theme?id=" + message.getId_theme() + "' target='_top'>"
+					+ message.getTheme_title() + "</a>", new HtmlRenderer()).setCaption("Theme");
 			grid.addColumn(message -> message.getText(), new TextRenderer()).setCaption("Text");
-			grid.addColumn(message -> message.getUser().getUsername(), new TextRenderer()).setCaption("Autor");
-			grid.addColumn(Message::getDate).setCaption("Date");
+			grid.addColumn(message -> message.getUser(), new TextRenderer()).setCaption("Autor");
+			grid.addColumn(MessageDto::getDate).setCaption("Date");
 			grid.addColumn(message -> "Publish message",
-					new ButtonRenderer<Message>(clickEvent -> publishClick(clickEvent, grid))).setCaption("Publish");
+					new ButtonRenderer<MessageDto>(clickEvent -> publishClick(clickEvent, grid))).setCaption("Publish");
 
 			root.addComponent(grid);
 			root.setExpandRatio(grid, 1f);
@@ -75,10 +79,10 @@ public class ModeratorUI extends UI {
 		}
 	}
 
-	protected void publishClick(RendererClickEvent<Message> clickEvent, Grid<Message> grid) {
-		Message msg = clickEvent.getItem();
+	protected void publishClick(RendererClickEvent<MessageDto> clickEvent, Grid<MessageDto> grid) {
+		MessageDto msg = clickEvent.getItem();
 		msg.setIs_published(true);
-		messageDao.update(msg);
+		rm.patch(null, "/messages/publish/" + msg.getId());
 		messages.remove(msg);
 		grid.clearSortOrder();
 

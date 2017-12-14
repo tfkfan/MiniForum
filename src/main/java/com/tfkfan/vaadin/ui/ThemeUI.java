@@ -6,6 +6,9 @@ import com.tfkfan.hibernate.entities.Message;
 import com.tfkfan.hibernate.entities.Theme;
 import com.tfkfan.hibernate.entities.User;
 import com.tfkfan.security.SecurityContextUtils;
+import com.tfkfan.server.RequestMaker;
+import com.tfkfan.server.service.dto.MessageDto;
+import com.tfkfan.server.service.dto.ThemeDto;
 import com.tfkfan.vaadin.ui.widgets.HeaderBarWidget;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -14,15 +17,18 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.renderers.TextRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.vaadin.spring.security.VaadinSecurity;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import static com.tfkfan.server.ServerUtils.THEME_PAGE;
 
 @com.vaadin.annotations.Theme("Demo")
-@SpringUI(path = THEME_PAGE )
+@SpringUI(path = THEME_PAGE)
 public class ThemeUI extends UI {
 
 	private static final long serialVersionUID = 1L;
@@ -33,18 +39,16 @@ public class ThemeUI extends UI {
 	@Autowired
 	VaadinSecurity vaadinSecurity;
 
-	@Autowired
-	ThemeDao themeDao;
+	private RequestMaker<ThemeDto> rm;
+	private RequestMaker<MessageDto> msgRm;
 
-	@Autowired
-	MessageDao messageDao;
-
-	Theme theme;
+	ThemeDto theme;
 	User currentUser;
 
 	@PostConstruct
 	public void init() {
-
+		rm = new RequestMaker<ThemeDto>(ThemeDto.class);
+		msgRm = new RequestMaker<MessageDto>(MessageDto.class);
 	}
 
 	@Override
@@ -54,12 +58,13 @@ public class ThemeUI extends UI {
 			currentUser = SecurityContextUtils.getUser();
 
 			Long id_theme = Long.parseLong(request.getParameter("id"));
-			theme = themeDao.get(id_theme);
+			theme = rm.get("/themes/" + id_theme);
 
-			Set<Message> messages = new HashSet<Message>();
+			Set<MessageDto> messages = new HashSet<MessageDto>();
 			if (theme != null) {
 				getPage().setTitle(theme.getTitle() + " theme");
-				messages.addAll(theme.getPublishedMessages());
+				messages.addAll(msgRm.get("/messages", new ParameterizedTypeReference<List<MessageDto>>() {
+				}));
 			}
 
 			final VerticalLayout root = new VerticalLayout();
@@ -69,13 +74,13 @@ public class ThemeUI extends UI {
 			root.setSizeFull();
 			root.addComponent(topElems);
 
-			Grid<Message> grid = new Grid<Message>();
+			Grid<MessageDto> grid = new Grid<MessageDto>();
 			grid.setSizeFull();
 			grid.setItems(messages);
 
 			grid.addColumn(message -> message.getText(), new TextRenderer()).setCaption("Text").setWidth(1000);
-			grid.addColumn(message -> message.getUser().getUsername(), new TextRenderer()).setCaption("Autor");
-			grid.addColumn(Message::getDate).setCaption("Date");
+			grid.addColumn(message -> message.getUser(), new TextRenderer()).setCaption("Autor");
+			grid.addColumn(MessageDto::getDate).setCaption("Date");
 
 			root.addComponent(grid);
 			root.setExpandRatio(grid, 1f);
@@ -117,9 +122,8 @@ public class ThemeUI extends UI {
 		if (theme == null)
 			return;
 
-		String date = LocalDateTime.now().toString();
-		Message message = new Message(text, date, theme, currentUser);
-		messageDao.save(message);
+		msgRm.put(new HttpEntity<MessageDto>(new MessageDto(theme.getId(), currentUser.getId(), text)),
+				"/messages/add");
 
 		Page.getCurrent().reload();
 
