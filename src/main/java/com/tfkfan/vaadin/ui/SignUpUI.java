@@ -1,22 +1,15 @@
 package com.tfkfan.vaadin.ui;
 
-import com.tfkfan.hibernate.dao.RoleDao;
 import com.tfkfan.hibernate.dao.UserAlreadyExistsException;
-import com.tfkfan.hibernate.dao.UserDao;
-import com.tfkfan.hibernate.entities.Role;
-import com.tfkfan.hibernate.entities.User;
-import com.tfkfan.security.enums.UserRole;
+import com.tfkfan.server.service.impl.UserService;
 import com.tfkfan.vaadin.ui.widgets.AuthForm;
 import com.vaadin.annotations.Theme;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.spring.security.shared.VaadinSharedSecurity;
 import static com.tfkfan.server.ServerUtils.SIGNUP_PAGE;
 import static com.tfkfan.server.ServerUtils.LOGIN_PAGE;
@@ -32,15 +25,7 @@ public class SignUpUI extends UI {
 	private AuthForm form;
 
 	@Autowired
-	UserDao userDao;
-
-	@Autowired
-	PasswordEncoder pe;
-
-	@Autowired
-	RoleDao roleDao;
-
-	Role userRole;
+	UserService userService;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -53,23 +38,14 @@ public class SignUpUI extends UI {
 		form.setSignUpClick(e -> signUp());
 		form.setLoginClick(e -> getPage().setLocation(LOGIN_PAGE));
 
-		userRole = roleDao.getRoleByName(UserRole.ROLE_USER.getRole());
-
 		setContent(form);
 		setSizeFull();
 	}
 
 	private void signUp() {
 		try {
-			User user = new User();
-			String username = form.getUsername();
-			String password = pe.encode(form.getPassword());
-
-			user.setUsername(username);
-			user.setPassword(password);
-			user.setRole(userRole);
-			userDao.createUser(user);
-			vaadinSecurity.login(username, form.getPassword());
+			userService.createNewUser(form.getUsername(), form.getPassword());
+			getPage().setLocation(LOGIN_PAGE);
 		} catch (AuthenticationException | UserAlreadyExistsException ex) {
 			form.updateWithError(ex.getMessage());
 		} catch (Exception ex) {

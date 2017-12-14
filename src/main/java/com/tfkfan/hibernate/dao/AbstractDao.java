@@ -23,8 +23,6 @@ public abstract class AbstractDao<T> {
 	}
 
 	public void save(T object){
-		if(object instanceof Theme)
-		log.info("SAVED + " + ((Theme)object).getTitle());
 		hTemplate.save(object);
 	}
 
@@ -46,6 +44,10 @@ public abstract class AbstractDao<T> {
 
 	protected void setTemplate(HibernateTemplate hTemplate) {
 		this.hTemplate = hTemplate;
+	}
+	
+	public void delete(T obj){
+		hTemplate.delete(obj);
 	}
 	
 }

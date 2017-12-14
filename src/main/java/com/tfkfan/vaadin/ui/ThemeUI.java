@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import static com.tfkfan.server.ServerUtils.HOME_PAGE;
 import static com.tfkfan.server.ServerUtils.THEME_PAGE;
 
 @com.vaadin.annotations.Theme("Demo")
@@ -53,7 +54,13 @@ public class ThemeUI extends UI {
 			getPage().setTitle("Forum theme");
 			currentUser = SecurityContextUtils.getUser();
 
-			Long id_theme = Long.parseLong(request.getParameter("id"));
+			String param = request.getParameter("id");
+			
+			if(param == null){
+				getPage().setLocation(HOME_PAGE);
+				return;
+			}
+			Long id_theme = Long.parseLong(param);
 			theme = themeDao.get(id_theme);
 
 			Set<Message> messages = new HashSet<Message>();
