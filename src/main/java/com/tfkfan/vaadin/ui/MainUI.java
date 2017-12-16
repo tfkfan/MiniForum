@@ -68,9 +68,9 @@ public class MainUI extends UI {
 		grid.setItems(themes);
 
 		grid.addColumn(theme -> "<a href='/theme?id=" + theme.getId() + "' target='_top'>" + theme.getTitle() + "</a>",
-				new HtmlRenderer()).setCaption("Title");
-		grid.addColumn(theme -> theme.getAutor().getUsername(), new TextRenderer()).setCaption("Autor");
-		grid.addColumn(Theme::getDate).setCaption("Date");
+				new HtmlRenderer()).setCaption("Title").setSortable(false);
+		grid.addColumn(theme -> theme.getAutor().getUsername(), new TextRenderer()).setCaption("Autor").setSortable(false);
+		grid.addColumn(Theme::getDate).setCaption("Date").setSortable(false);
 
 		root.addComponent(grid);
 		root.setExpandRatio(grid, 1f);

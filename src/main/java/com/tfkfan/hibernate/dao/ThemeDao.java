@@ -12,6 +12,5 @@ public class ThemeDao extends AbstractDao<Theme> {
 	
 	public ThemeDao() {
 		super(Theme.class);
-
 	}
 }

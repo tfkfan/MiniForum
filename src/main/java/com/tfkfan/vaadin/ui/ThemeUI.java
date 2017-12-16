@@ -79,9 +79,9 @@ public class ThemeUI extends UI {
 			grid.setSizeFull();
 			grid.setItems(messages);
 
-			grid.addColumn(message -> message.getText(), new TextRenderer()).setCaption("Text").setWidth(1000);
-			grid.addColumn(message -> message.getUser().getUsername(), new TextRenderer()).setCaption("Autor");
-			grid.addColumn(Message::getDate).setCaption("Date");
+			grid.addColumn(message -> message.getText(), new TextRenderer()).setCaption("Text").setWidth(1000).setSortable(false);
+			grid.addColumn(message -> message.getUser().getUsername(), new TextRenderer()).setCaption("Autor").setSortable(false);
+			grid.addColumn(Message::getDate).setCaption("Date").setSortable(false);
 
 			root.addComponent(grid);
 			root.setExpandRatio(grid, 1f);

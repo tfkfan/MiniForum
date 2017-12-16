@@ -1,7 +1,7 @@
 package com.tfkfan.hibernate.dao;
 
+import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,15 +14,13 @@ public class MessageDao extends AbstractDao<Message> {
 
 	public MessageDao() {
 		super(Message.class);
-
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Message> getAllNotPublishedMessages() {
-		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='false'");
+		return this.listAllOrderByWithParam("is_published='false'", "date", true);
 	}
-	
+
 	public List<Message> getAllPublishedMessagesByThemeId(Long themeId) {
-		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='true' AND id_theme=" + themeId + " ORDER BY date ASC");
+		return this.listAllOrderByWithParam(Arrays.asList("is_published='true'", "id_theme=" + themeId), "date", true);
 	}
 }

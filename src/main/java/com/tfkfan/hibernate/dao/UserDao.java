@@ -18,8 +18,7 @@ public class UserDao extends AbstractDao<User> {
 	}
 
 	public User findByUsername(String username) {
-		@SuppressWarnings("unchecked")
-		List<User> users = (List<User>) getTemplate().find("FROM User WHERE username=?", username);
+		List<User> users = this.listAllWithParam(String.format("username='%s'", username));
 		if (users.isEmpty())
 			return null;
 		return users.get(0);
