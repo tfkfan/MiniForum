@@ -42,6 +42,8 @@ public class ThemeUI extends UI {
 	Theme theme;
 	User currentUser;
 
+	TextArea textField;
+	
 	@PostConstruct
 	public void init() {
 
@@ -106,7 +108,7 @@ public class ThemeUI extends UI {
 
 		layout.setWidth("100%");
 
-		TextArea textField = new TextArea("Message");
+		textField = new TextArea("Message");
 		textField.setWidth("100%");
 		layout.addComponent(textField);
 
@@ -125,11 +127,11 @@ public class ThemeUI extends UI {
 
 		try {
 			msgService.addMessage(text, theme, currentUser);
+			textField.clear();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Page.getCurrent().reload();
-
+	
 	}
 }
