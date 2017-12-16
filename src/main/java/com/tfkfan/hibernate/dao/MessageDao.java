@@ -21,4 +21,8 @@ public class MessageDao extends AbstractDao<Message> {
 	public List<Message> getAllNotPublishedMessages() {
 		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='false'");
 	}
+	
+	public List<Message> getAllPublishedMessagesByThemeId(Long themeId) {
+		return (List<Message>) getTemplate().find("FROM Message WHERE is_published='true' AND id_theme=" + themeId + " ORDER BY date ASC");
+	}
 }

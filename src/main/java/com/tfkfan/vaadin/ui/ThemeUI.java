@@ -65,7 +65,7 @@ public class ThemeUI extends UI {
 			Set<Message> messages = new HashSet<Message>();
 			if (theme != null) {
 				getPage().setTitle(theme.getTitle() + " theme");
-				messages.addAll(theme.getPublishedMessages());
+				messages.addAll(msgService.getSortedMessagesById(id_theme));
 			}
 
 			final VerticalLayout root = new VerticalLayout();

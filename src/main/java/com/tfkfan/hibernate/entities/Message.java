@@ -1,5 +1,7 @@
 package com.tfkfan.hibernate.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ public class Message {
 	protected String text;
 
 	@Column(name = "date")
-	protected String date;
+	protected Date date;
 
 	@Column(name = "is_published")
 	protected String is_published;
@@ -38,7 +40,7 @@ public class Message {
 
 	}
 
-	public Message(String text, String date, Theme theme, User user) {
+	public Message(String text, Date date, Theme theme, User user) {
 		setText(text);
 		setDate(date);
 		setTheme(theme);
@@ -70,11 +72,11 @@ public class Message {
 		this.text = text;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

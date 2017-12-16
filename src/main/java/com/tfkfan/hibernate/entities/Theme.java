@@ -1,5 +1,6 @@
 package com.tfkfan.hibernate.entities;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public class Theme {
 	private Long id;
 
 	@Column(name = "date")
-	private String date;
+	private Date date;
 
 	@Column(name = "title")
 	private String title;
@@ -30,17 +31,17 @@ public class Theme {
 
 	}
 
-	public Theme(String date, String title, User autor) {
+	public Theme(Date date, String title, User autor) {
 		setDate(date);
 		setTitle(title);
 		setAutor(autor);
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -72,15 +73,6 @@ public class Theme {
 		return messages;
 	}
 	
-	public Set<Message> getPublishedMessages(){
-		Set<Message> msgs = new HashSet<Message>();
-		for(Message msg : messages)
-			if(msg.getIs_published())
-				msgs.add(msg);
-		
-		return msgs;
-	}
-
 	public void setMessages(Set<Message> messages) {
 		this.messages = messages;
 	}

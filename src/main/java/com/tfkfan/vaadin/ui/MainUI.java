@@ -57,7 +57,7 @@ public class MainUI extends UI {
 
 		List<Theme> themes = new ArrayList<Theme>();
 		try {
-			themes.addAll(themeService.getAll());
+			themes.addAll(themeService.getSortedThemes());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
