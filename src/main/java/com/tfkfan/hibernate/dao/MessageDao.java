@@ -17,10 +17,10 @@ public class MessageDao extends AbstractDao<Message> {
 	}
 
 	public List<Message> getAllNotPublishedMessages() {
-		return this.listAllOrderByWithParam("is_published='false'", "date", true);
+		return this.listAllOrderByWithParam("is_published='false'", "date", false);
 	}
 
 	public List<Message> getAllPublishedMessagesByThemeId(Long themeId) {
-		return this.listAllOrderByWithParam(Arrays.asList("is_published='true'", "id_theme=" + themeId), "date", true);
+		return this.listAllOrderByWithParam(Arrays.asList("is_published='true'", "id_theme=" + themeId), "date", false);
 	}
 }
